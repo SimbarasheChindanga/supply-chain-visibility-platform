@@ -109,6 +109,9 @@ The platform uses a curated dataset of **50 shipments** covering all major route
 
 ---
 
+## 📁 Project Structure
+
+```plaintext
 03_supply_chain_visibility_platform/
 │
 ├── backend/
@@ -152,6 +155,7 @@ The platform uses a curated dataset of **50 shipments** covering all major route
 ├── database/
 ├── docs/
 └── tests/
+```
 
 
 ---
