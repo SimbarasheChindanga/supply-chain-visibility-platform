@@ -109,47 +109,45 @@ The platform uses a curated dataset of **50 shipments** covering all major route
 
 ---
 
-## 📁 Project Structure
-
 03_supply_chain_visibility_platform/
 │
 ├── backend/
-│ ├── src/
-│ │ ├── models/
-│ │ │ └── User.js # User schema (JSON storage)
-│ │ ├── routes/
-│ │ │ ├── testRoutes.js # API test endpoints
-│ │ │ └── authRoutes.js # Login/Register endpoints
-│ │ └── utils/
-│ │ └── userUtils.js # User CRUD operations
-│ ├── scripts/
-│ │ └── seedData.js # Data import script
-│ ├── .env # Environment variables
-│ ├── package.json # Backend dependencies
-│ ├── server.js # Express server entry point
-│ └── users.json # User database (JSON)
+│   ├── src/
+│   │   ├── models/
+│   │   │   └── User.js               # User schema (JSON storage)
+│   │   ├── routes/
+│   │   │   ├── testRoutes.js         # API test endpoints
+│   │   │   └── authRoutes.js         # Login/Register endpoints
+│   │   └── utils/
+│   │       └── userUtils.js          # User CRUD operations
+│   ├── scripts/
+│   │   └── seedData.js               # Data import script
+│   ├── .env                          # Environment variables
+│   ├── package.json                  # Backend dependencies
+│   ├── server.js                     # Express server entry point
+│   └── users.json                    # User database (JSON)
 │
 ├── frontend/
-│ ├── public/
-│ │ └── index.html # HTML template
-│ ├── src/
-│ │ ├── components/
-│ │ │ ├── ShipmentMap.js # Map component
-│ │ │ └── Navbar.js # Navigation bar
-│ │ ├── context/
-│ │ │ └── AuthContext.js # Auth state management
-│ │ ├── pages/
-│ │ │ ├── Login.js # Login page
-│ │ │ ├── Register.js # Registration page
-│ │ │ └── Analytics.js # Analytics dashboard
-│ │ ├── utils/
-│ │ │ └── notifications.js # Browser notification utils
-│ │ ├── App.js # Main App component
-│ │ ├── App.css # App styles
-│ │ ├── index.js # Entry point
-│ │ └── index.css # Global styles
-│ ├── package.json # Frontend dependencies
-│ └── package-lock.json
+│   ├── public/
+│   │   └── index.html                # HTML template
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── ShipmentMap.js        # Map component
+│   │   │   └── Navbar.js             # Navigation bar
+│   │   ├── context/
+│   │   │   └── AuthContext.js        # Auth state management
+│   │   ├── pages/
+│   │   │   ├── Login.js              # Login page
+│   │   │   ├── Register.js           # Registration page
+│   │   │   └── Analytics.js          # Analytics dashboard
+│   │   ├── utils/
+│   │   │   └── notifications.js      # Browser notification utils
+│   │   ├── App.js                    # Main App component
+│   │   ├── App.css                   # App styles
+│   │   ├── index.js                  # Entry point
+│   │   └── index.css                 # Global styles
+│   ├── package.json                  # Frontend dependencies
+│   └── package-lock.json
 │
 ├── database/
 ├── docs/
@@ -263,7 +261,16 @@ The platform uses a curated dataset of **50 shipments** covering all major route
 
 ### Browser Notification
 ![Notification](screenshots/notification.png)
+
 ---
+
+## 🌐 Live Demo
+
+Try the live application at: [https://your-app.vercel.app](https://your-app.vercel.app)
+
+**Demo Credentials:**
+- Username: `admin`
+- Password: `password123`
 
 ## 🚀 Installation & Usage
 
@@ -354,17 +361,18 @@ Set up CI/CD pipeline
 
 ## 🏆 Skills Demonstrated
 
-Skill Category	Specific Skills
-Frontend	React, Hooks, State Management, React Router, Axios
-Backend	Node.js, Express, REST APIs, WebSockets
-Authentication	JWT, bcrypt, Role-Based Access Control
-Data Visualization	Recharts, Pie/Bar Charts, Analytics Dashboard
-Mapping	Leaflet, OpenStreetMap, GPS Coordinates
-Security	Password Hashing, Token Authentication, CORS
-Real-Time	Socket.io, WebSocket Communication
-UI/UX	Responsive Design, Browser Notifications
-API Development	RESTful Endpoints, Error Handling, Testing
-Project Management	Git, GitHub, Project Structure, Documentation
+| Skill Category | Specific Skills |
+|----------------|-----------------|
+| **Frontend** | React, Hooks, State Management, React Router, Axios |
+| **Backend** | Node.js, Express, REST APIs, WebSockets |
+| **Authentication** | JWT, bcrypt, Role-Based Access Control |
+| **Data Visualization** | Recharts, Pie/Bar Charts, Analytics Dashboard |
+| **Mapping** | Leaflet, OpenStreetMap, GPS Coordinates |
+| **Security** | Password Hashing, Token Authentication, CORS |
+| **Real-Time** | Socket.io, WebSocket Communication |
+| **UI/UX** | Responsive Design, Browser Notifications |
+| **API Development** | RESTful Endpoints, Error Handling, Testing |
+| **Project Management** | Git, GitHub, Project Structure, Documentation |
 
 ## 👤 Author
 
