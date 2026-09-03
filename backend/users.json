@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "username": "admin",
+    "email": "admin@supplychain.com",
+    "password": "$2b$10$Yys.z.wSBn/A9n6g4MdYE.EPfKCf5CnzsNxYKoIbxW0z/kpF3BT3i",
+    "role": "admin",
+    "fullName": "System Administrator",
+    "phoneNumber": "+263771234567",
+    "company": "Supply Chain Zimbabwe",
+    "isActive": true,
+    "createdAt": "2026-08-11T13:36:01.905Z"
+  },
+  {
+    "id": "2",
+    "username": "driver1",
+    "email": "driver1@supplychain.com",
+    "password": "$2b$10$Yys.z.wSBn/A9n6g4MdYE.EPfKCf5CnzsNxYKoIbxW0z/kpF3BT3i",
+    "role": "driver",
+    "fullName": "Tendai Moyo",
+    "phoneNumber": "+263771234568",
+    "company": "Harare Logistics",
+    "isActive": true,
+    "createdAt": "2026-08-11T13:36:01.906Z"
+  },
+  {
+    "id": "3",
+    "username": "customer1",
+    "email": "customer1@supplychain.com",
+    "password": "$2b$10$Yys.z.wSBn/A9n6g4MdYE.EPfKCf5CnzsNxYKoIbxW0z/kpF3BT3i",
+    "role": "customer",
+    "fullName": "Simbarashe Chindanga",
+    "phoneNumber": "+263771234569",
+    "company": "Zimbabwe Traders",
+    "isActive": true,
+    "createdAt": "2026-08-11T13:36:01.906Z"
+  }
+]
