@@ -18,7 +18,7 @@ const testRoutes = require('./src/routes/testRoutes');
 const authRoutes = require('./src/routes/authRoutes');
 
 // Import user utilities
-const { findUserByUsernameOrEmail, validateUser, createUser } = require('./src/Utils/userutils');
+const { findUserByUsernameOrEmail, validateUser, createUser } = require('./src/utils/userUtils');
 
 // Initialize app
 const app = express();
