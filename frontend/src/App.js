@@ -11,6 +11,9 @@ import Navbar from './components/Navbar';
 import { useAuth } from './context/AuthContext';
 import { requestNotificationPermission, sendShipmentNotification, testNotification } from './utils/notifications';
 
+// ✅ BACKEND API URL - Replace with your Render URL
+const API_URL = 'https://supply-chain-api-gbnr.onrender.com';
+
 function App() {
   const { isAuthenticated, loading, user, logout } = useAuth();
   const [apiStatus, setApiStatus] = useState('Checking...');
@@ -27,7 +30,6 @@ function App() {
 
   // Zimbabwe Routes Database - 50 Shipments
   const zimbabweRoutes = {
-    // HARARE ROUTES
     'SHIP-001': {
       origin: 'Harare, Zimbabwe',
       destination: 'Bulawayo, Zimbabwe',
@@ -163,7 +165,6 @@ function App() {
       status: 'Delivered',
       location: { lat: -18.1333, lng: 30.1500 }
     },
-    // BULAWAYO ROUTES
     'SHIP-016': {
       origin: 'Bulawayo, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -209,7 +210,6 @@ function App() {
       status: 'At Border - Clearance',
       location: { lat: -20.4800, lng: 27.8200 }
     },
-    // MUTARE ROUTES
     'SHIP-021': {
       origin: 'Mutare, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -246,7 +246,6 @@ function App() {
       status: 'Delayed - Road Conditions',
       location: { lat: -19.8000, lng: 32.8667 }
     },
-    // BEITBRIDGE ROUTES
     'SHIP-025': {
       origin: 'Beitbridge, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -274,7 +273,6 @@ function App() {
       status: 'Delayed - Border Congestion',
       location: { lat: -21.0200, lng: 30.0000 }
     },
-    // VICTORIA FALLS ROUTES
     'SHIP-028': {
       origin: 'Victoria Falls, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -302,7 +300,6 @@ function App() {
       status: 'Pending',
       location: { lat: -17.5000, lng: 27.5000 }
     },
-    // GWERU ROUTES
     'SHIP-031': {
       origin: 'Gweru, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -330,7 +327,6 @@ function App() {
       status: 'Delivered',
       location: { lat: -18.9200, lng: 29.8100 }
     },
-    // MASVINGO ROUTES
     'SHIP-034': {
       origin: 'Masvingo, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -358,7 +354,6 @@ function App() {
       status: 'In Transit',
       location: { lat: -20.5000, lng: 31.5000 }
     },
-    // CHIREDZI ROUTES
     'SHIP-037': {
       origin: 'Chiredzi, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -377,7 +372,6 @@ function App() {
       status: 'In Transit',
       location: { lat: -20.5000, lng: 31.0000 }
     },
-    // KWEKWE ROUTES
     'SHIP-039': {
       origin: 'Kwekwe, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -396,7 +390,6 @@ function App() {
       status: 'Delivered',
       location: { lat: -19.2000, lng: 29.9000 }
     },
-    // CHINHOYI ROUTES
     'SHIP-041': {
       origin: 'Chinhoyi, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -415,7 +408,6 @@ function App() {
       status: 'In Transit',
       location: { lat: -16.9000, lng: 29.0000 }
     },
-    // KARIBA ROUTES
     'SHIP-043': {
       origin: 'Kariba, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -434,7 +426,6 @@ function App() {
       status: 'At Border - Clearance',
       location: { lat: -16.0283, lng: 28.8550 }
     },
-    // PLUMTREE ROUTES
     'SHIP-045': {
       origin: 'Plumtree, Zimbabwe',
       destination: 'Bulawayo, Zimbabwe',
@@ -453,7 +444,6 @@ function App() {
       status: 'Pending',
       location: { lat: -19.5000, lng: 28.5000 }
     },
-    // NYAMAPANDA ROUTES
     'SHIP-047': {
       origin: 'Nyamapanda, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -472,7 +462,6 @@ function App() {
       status: 'At Border - Clearance',
       location: { lat: -18.4000, lng: 32.2000 }
     },
-    // ADDITIONAL ROUTES
     'SHIP-049': {
       origin: 'Kadoma, Zimbabwe',
       destination: 'Harare, Zimbabwe',
@@ -493,14 +482,14 @@ function App() {
     }
   };
 
-  // Check backend connection on load
+  // ✅ Check backend connection on load (using Render URL)
   useEffect(() => {
     checkBackend();
   }, []);
 
   const checkBackend = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/test');
+      const response = await axios.get(`${API_URL}/api/test`);
       if (response.data.success) {
         setApiStatus('✅ Connected to Backend');
       }
