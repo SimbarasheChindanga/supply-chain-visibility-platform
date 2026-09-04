@@ -2,18 +2,17 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
+const API_URL = 'https://supply-chain-api-gbnr.onrender.com';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
 
-  // Set axios default header
   if (token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }
 
-  // Check if user is logged in on mount
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
@@ -26,10 +25,9 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  // Login function
   const login = async (username, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         username,
         password
       });
@@ -52,10 +50,9 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Register function
   const register = async (userData) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+      const response = await axios.post(`${API_URL}/api/auth/register`, userData);
 
       if (response.data.success) {
         const { token, user } = response.data;
@@ -75,7 +72,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Logout function
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
