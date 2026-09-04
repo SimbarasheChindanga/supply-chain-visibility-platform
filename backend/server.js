@@ -23,15 +23,24 @@ const { findUserByUsernameOrEmail, validateUser, createUser } = require('./src/u
 // Initialize app
 const app = express();
 const server = http.createServer(app);
+
+// ✅ FIXED CORS - Allow all origins for testing
 const io = new Server(server, {
     cors: {
-        origin: process.env.FRONTEND_URL || "http://localhost:3000",
-        methods: ["GET", "POST", "PUT", "DELETE"]
+        origin: '*', // Allow all origins
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"]
     }
 });
 
+// ✅ FIXED CORS - Allow all origins
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 // Middleware
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
