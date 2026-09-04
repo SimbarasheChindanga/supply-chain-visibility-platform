@@ -2,6 +2,8 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
+
+// ✅ BACKEND API URL
 const API_URL = 'https://supply-chain-api-gbnr.onrender.com';
 
 export function AuthProvider({ children }) {
@@ -9,10 +11,12 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
 
+  // Set axios default header
   if (token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }
 
+  // Check if user is logged in on mount
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
@@ -25,6 +29,7 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
+  // ✅ Login function - Uses Render backend
   const login = async (username, password) => {
     try {
       const response = await axios.post(`${API_URL}/api/auth/login`, {
@@ -43,6 +48,7 @@ export function AuthProvider({ children }) {
       }
       return { success: false, message: 'Login failed' };
     } catch (error) {
+      console.error('Login error:', error);
       return {
         success: false,
         message: error.response?.data?.message || 'Login failed'
@@ -50,6 +56,7 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // ✅ Register function - Uses Render backend
   const register = async (userData) => {
     try {
       const response = await axios.post(`${API_URL}/api/auth/register`, userData);
@@ -65,6 +72,7 @@ export function AuthProvider({ children }) {
       }
       return { success: false, message: 'Registration failed' };
     } catch (error) {
+      console.error('Register error:', error);
       return {
         success: false,
         message: error.response?.data?.message || 'Registration failed'
@@ -72,6 +80,7 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Logout function
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
