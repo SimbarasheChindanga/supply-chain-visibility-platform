@@ -1,3 +1,7 @@
+// ============================================
+// SUPPLY CHAIN VISIBILITY PLATFORM - APP
+// ============================================
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
@@ -10,8 +14,11 @@ import Analytics from './pages/Analytics';
 import Navbar from './components/Navbar';
 import { useAuth } from './context/AuthContext';
 import { requestNotificationPermission, sendShipmentNotification, testNotification } from './utils/notifications';
+import zimbabweRoutes from './data/shipments';
 
-// ✅ BACKEND API URL
+// ============================================
+// BACKEND API URL
+// ============================================
 const API_URL = 'https://supply-chain-api-gbnr.onrender.com';
 
 function App() {
@@ -21,22 +28,17 @@ function App() {
   const [trackingData, setTrackingData] = useState(null);
   const [loadingShipment, setLoadingShipment] = useState(false);
 
+  // Request notification permission when user is authenticated
   useEffect(() => {
     if (isAuthenticated) {
       requestNotificationPermission();
     }
   }, [isAuthenticated]);
 
-  // Just a sample shipment for testing
-  const sampleShipment = {
-    origin: 'Harare, Zimbabwe',
-    destination: 'Bulawayo, Zimbabwe',
-    route: 'Harare → Bulawayo',
-    distance: '440 km',
-    eta: '2026-08-07 16:30',
-    status: 'In Transit',
-    location: { lat: -19.0154, lng: 29.1549 }
-  };
+  // Check backend connection
+  useEffect(() => {
+    checkBackend();
+  }, []);
 
   const checkBackend = async () => {
     try {
@@ -50,10 +52,7 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    checkBackend();
-  }, []);
-
+  // Track Shipment - Case Insensitive with Notifications
   const trackShipment = async (e) => {
     e.preventDefault();
     if (!shipmentId.trim()) return;
@@ -61,17 +60,18 @@ function App() {
     setLoadingShipment(true);
     try {
       const searchId = shipmentId.trim().toUpperCase();
-      // For testing, always use the sample shipment
-      if (searchId.includes('SHIP')) {
+      const shipment = zimbabweRoutes[searchId];
+
+      if (shipment) {
         const shipmentData = {
           id: searchId,
-          ...sampleShipment,
+          ...shipment,
           lastUpdate: new Date().toISOString(),
         };
         setTrackingData(shipmentData);
         sendShipmentNotification(shipmentData);
       } else {
-        alert('Enter a shipment ID like SHIP-001');
+        alert('Shipment not found. Try SHIP-001 to SHIP-050');
         setTrackingData(null);
       }
     } catch (error) {
@@ -80,10 +80,14 @@ function App() {
     setLoadingShipment(false);
   };
 
+  // Loading screen
   if (loading) {
     return <div className="loading-screen">Loading...</div>;
   }
 
+  // ============================================
+  // DASHBOARD COMPONENT
+  // ============================================
   const Dashboard = () => (
     <div className="App">
       <header className="App-header">
@@ -95,15 +99,21 @@ function App() {
             {user && (
               <div className="user-menu">
                 <span className="user-name">👋 {user.fullName || user.username}</span>
-                <button onClick={() => testNotification()} className="test-notification-btn" style={{
-                  background: 'rgba(255,255,255,0.15)',
-                  color: 'white',
-                  border: '1px solid rgba(255,255,255,0.3)',
-                  padding: '0.4rem 1rem',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: '0.85rem'
-                }}>🔔 Test</button>
+                <button
+                  onClick={() => testNotification()}
+                  className="test-notification-btn"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.15)',
+                    color: 'white',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    padding: '0.4rem 1rem',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '0.85rem'
+                  }}
+                >
+                  🔔 Test
+                </button>
                 <button onClick={logout} className="logout-btn">Logout</button>
               </div>
             )}
@@ -117,7 +127,7 @@ function App() {
           <form onSubmit={trackShipment} className="tracking-form">
             <input
               type="text"
-              placeholder="Enter Shipment ID"
+              placeholder="Enter Shipment ID (e.g., SHIP-001)"
               value={shipmentId}
               onChange={(e) => setShipmentId(e.target.value)}
               className="tracking-input"
@@ -133,14 +143,40 @@ function App() {
           <section className="shipment-details">
             <h3>Shipment Details</h3>
             <div className="details-grid">
-              <div className="detail-item"><span className="detail-label">Shipment ID:</span><span className="detail-value">{trackingData.id}</span></div>
-              <div className="detail-item"><span className="detail-label">Status:</span><span className="detail-value status">{trackingData.status}</span></div>
-              <div className="detail-item"><span className="detail-label">Route:</span><span className="detail-value">{trackingData.route}</span></div>
-              <div className="detail-item"><span className="detail-label">Origin:</span><span className="detail-value">{trackingData.origin}</span></div>
-              <div className="detail-item"><span className="detail-label">Destination:</span><span className="detail-value">{trackingData.destination}</span></div>
-              <div className="detail-item"><span className="detail-label">Distance:</span><span className="detail-value">{trackingData.distance}</span></div>
-              <div className="detail-item"><span className="detail-label">ETA:</span><span className="detail-value">{trackingData.eta}</span></div>
+              <div className="detail-item">
+                <span className="detail-label">Shipment ID:</span>
+                <span className="detail-value">{trackingData.id}</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Status:</span>
+                <span className="detail-value status">{trackingData.status}</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Route:</span>
+                <span className="detail-value">{trackingData.route}</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Origin:</span>
+                <span className="detail-value">{trackingData.origin}</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Destination:</span>
+                <span className="detail-value">{trackingData.destination}</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Distance:</span>
+                <span className="detail-value">{trackingData.distance}</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Estimated Arrival:</span>
+                <span className="detail-value">{trackingData.eta}</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Last Update:</span>
+                <span className="detail-value">{new Date(trackingData.lastUpdate).toLocaleString()}</span>
+              </div>
             </div>
+
             <ShipmentMap shipment={trackingData} />
           </section>
         )}
@@ -152,13 +188,16 @@ function App() {
     </div>
   );
 
+  // ============================================
+  // ROUTES
+  // ============================================
   return (
     <Router>
       <Routes>
         <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
         <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to="/" />} />
         <Route path="/" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/analytics" element={isAuthenticated ? <Analytics shipments={{}} /> : <Navigate to="/login" />} />
+        <Route path="/analytics" element={isAuthenticated ? <Analytics shipments={zimbabweRoutes} /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );
