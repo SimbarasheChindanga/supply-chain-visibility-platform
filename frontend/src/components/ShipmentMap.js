@@ -1,6 +1,7 @@
 // ============================================
 // SHIPMENT MAP COMPONENT
 // Displays shipment location on Zimbabwe map
+// With detailed current location info
 // ============================================
 
 import React from 'react';
@@ -33,6 +34,10 @@ const cityCoordinates = {
   'Gokwe': [-18.2100, 28.9300],
   'Mvuma': [-19.2800, 30.5300],
   'Chiredzi': [-21.0500, 31.6700],
+  'Chinhoyi': [-17.3500, 30.2000],
+  'Kadoma': [-18.3333, 29.9167],
+  'Chegutu': [-18.1333, 30.1500],
+  'Chimanimani': [-19.8000, 32.8667],
 };
 
 function ShipmentMap({ shipment }) {
@@ -101,15 +106,25 @@ function ShipmentMap({ shipment }) {
           </Marker>
         )}
 
-        {/* Current Location Marker (green dot) */}
+        {/* Current Location Marker (green dot) with detailed info */}
         {shipment.location && (
           <Marker 
             position={[shipment.location.lat, shipment.location.lng]}
             icon={greenIcon}
           >
             <Popup>
-              <strong>🚚 Current Location</strong><br />
-              {shipment.status}
+              <div style={{ minWidth: '220px' }}>
+                <strong style={{ fontSize: '14px' }}>🚚 Current Location</strong>
+                <hr style={{ margin: '6px 0' }} />
+                <div style={{ fontSize: '13px', lineHeight: '1.6' }}>
+                  <strong>📍 Area:</strong> {shipment.currentArea || 'Unknown'}<br />
+                  <strong>🛣️ Road:</strong> {shipment.currentRoad || 'Unknown'}<br />
+                  <strong>🏢 Landmark:</strong> {shipment.currentLandmark || 'Unknown'}<br />
+                  <strong>🎯 Next Stop:</strong> {shipment.nextStop || 'N/A'}<br />
+                  <strong>📏 Distance:</strong> {shipment.distanceToNextStop || 'N/A'}<br />
+                  <strong>📊 Status:</strong> {shipment.status}
+                </div>
+              </div>
             </Popup>
           </Marker>
         )}
@@ -133,14 +148,32 @@ function ShipmentMap({ shipment }) {
           <span className="map-info-value">{shipment.route}</span>
         </div>
         <div className="map-info-item">
-          <span className="map-info-label">Status:</span>
-          <span className="map-info-value" style={{ color: getStatusColor(shipment.status) }}>
-            {shipment.status}
+          <span className="map-info-label">📍 Current Area:</span>
+          <span className="map-info-value" style={{ color: '#22c55e' }}>
+            {shipment.currentArea || 'Unknown'}
           </span>
         </div>
         <div className="map-info-item">
-          <span className="map-info-label">Distance:</span>
-          <span className="map-info-value">{shipment.distance}</span>
+          <span className="map-info-label">🛣️ Road:</span>
+          <span className="map-info-value">{shipment.currentRoad || 'Unknown'}</span>
+        </div>
+        <div className="map-info-item">
+          <span className="map-info-label">🏢 Landmark:</span>
+          <span className="map-info-value">{shipment.currentLandmark || 'Unknown'}</span>
+        </div>
+        <div className="map-info-item">
+          <span className="map-info-label">🎯 Next Stop:</span>
+          <span className="map-info-value">{shipment.nextStop || 'N/A'}</span>
+        </div>
+        <div className="map-info-item">
+          <span className="map-info-label">📏 Distance:</span>
+          <span className="map-info-value">{shipment.distanceToNextStop || 'N/A'}</span>
+        </div>
+        <div className="map-info-item">
+          <span className="map-info-label">📊 Status:</span>
+          <span className="map-info-value" style={{ color: getStatusColor(shipment.status) }}>
+            {shipment.status}
+          </span>
         </div>
       </div>
     </div>
@@ -150,10 +183,7 @@ function ShipmentMap({ shipment }) {
 // Helper function to get city coordinates
 function getCityCoordinates(cityString) {
   if (!cityString) return null;
-  
-  // Extract city name from string (e.g., "Harare, Zimbabwe" → "Harare")
   const cityName = cityString.split(',')[0].trim();
-  
   return cityCoordinates[cityName] || null;
 }
 
