@@ -81,11 +81,11 @@ function ShipmentMap({ shipment }) {
         scrollWheelZoom={true}
       >
         {/* OpenStreetMap tiles */}
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-
+    <TileLayer
+  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+  maxZoom={19}
+/>
         {/* Origin Marker */}
         {originCoords && (
           <Marker position={originCoords}>

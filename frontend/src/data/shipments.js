@@ -7,7 +7,7 @@ const zimbabweRoutes = {
   // ============================================
   // HARARE → BULAWAYO (5 shipments - popular route)
   // ============================================
-  'SHIP-001': {
+   'SHIP-001': {
     origin: 'Harare, Zimbabwe',
     destination: 'Bulawayo, Zimbabwe',
     route: 'Harare → Bulawayo',
@@ -155,7 +155,7 @@ const zimbabweRoutes = {
     distanceToNextStop: '150 km',
     location: { lat: -19.0000, lng: 30.8833 }
   },
-  'SHIP-011': {
+    'SHIP-011': {
     origin: 'Harare, Zimbabwe',
     destination: 'Beitbridge, Zimbabwe',
     route: 'Harare → Beitbridge (Border)',
@@ -247,19 +247,19 @@ const zimbabweRoutes = {
   // ============================================
   // HARARE → GWERU (3 shipments)
   // ============================================
-  'SHIP-017': {
-    origin: 'Harare, Zimbabwe',
-    destination: 'Gweru, Zimbabwe',
-    route: 'Harare → Gweru',
-    distance: '275 km',
-    eta: '2026-08-07 11:30',
+    'SHIP-017': {
+    origin: 'Bulawayo, Zimbabwe',
+    destination: 'Victoria Falls, Zimbabwe',
+    route: 'Bulawayo → Victoria Falls',
+    distance: '440 km',
+    eta: '2026-08-08 16:30',
     status: 'In Transit',
-    currentArea: 'Kadoma',
-    currentRoad: 'A5 Highway',
-    currentLandmark: 'Kadoma Rimuka Shopping Centre',
-    nextStop: 'Kwekwe, Zimbabwe',
-    distanceToNextStop: '65 km',
-    location: { lat: -18.3333, lng: 29.9167 }
+    currentArea: 'Hwange Truck Stop',
+    currentRoad: 'A8 Highway',
+    currentLandmark: 'Hwange National Park Gate',
+    nextStop: 'Victoria Falls, Zimbabwe',
+    distanceToNextStop: '180 km',
+    location: { lat: -18.3667, lng: 26.5000 }
   },
   'SHIP-018': {
     origin: 'Harare, Zimbabwe',
@@ -353,7 +353,7 @@ const zimbabweRoutes = {
     distanceToNextStop: '90 km',
     location: { lat: -19.4550, lng: 29.8100 }
   },
-  'SHIP-024': {
+     'SHIP-024': {
     origin: 'Bulawayo, Zimbabwe',
     destination: 'Harare, Zimbabwe',
     route: 'Bulawayo → Harare',
@@ -541,7 +541,7 @@ const zimbabweRoutes = {
   // ============================================
   // HARARE → CHIRUNDU (2 shipments - border)
   // ============================================
-  'SHIP-036': {
+    'SHIP-036': {
     origin: 'Harare, Zimbabwe',
     destination: 'Chirundu, Zimbabwe',
     route: 'Harare → Chirundu (Zambia Border)',
