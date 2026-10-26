@@ -1,4 +1,4 @@
-// ============================================
+﻿// ============================================
 // ZIMBABWE SHIPMENTS DATA - 50 SHIPMENTS
 // With detailed current location tracking
 // ============================================
@@ -74,22 +74,23 @@ const zimbabweRoutes = {
     currentArea: 'Bulawayo CBD',
     currentLandmark: 'BCC Tower Block (mapped town hall)',
     location: { lat: -20.15504, lng: 28.58802 },
-    
+
   },
-  'SHIP-004': {
-    origin: 'Harare, Zimbabwe',
-    destination: 'Bulawayo, Zimbabwe',
-    route: 'Harare to Bulawayo',
-    distance: '440 km',
-    eta: getDemoEta('Pending', '440 km'),
-    status: 'Pending',
-    currentArea: 'Harare Depot',
-    currentRoad: 'Willowvale Industrial Park',
-    currentLandmark: 'Harare Loading Bay 3',
-    nextStop: 'Kwekwe, Zimbabwe',
-    distanceToNextStop: '210 km',
-    location: { lat: -17.8252, lng: 31.0335 }
-  },
+ 'SHIP-004': {
+  origin: 'Harare, Zimbabwe',
+  destination: 'Bulawayo, Zimbabwe',
+  route: 'Harare to Bulawayo',
+  distance: '440 km',
+  eta: getDemoEta('Delayed - Road Conditions', '440 km'),
+  status: 'Delayed - Road Conditions',
+  currentArea: 'Harare Depot',
+  currentRoad: 'Willowvale Industrial Park',
+  currentLandmark: 'Harare Loading Bay 3',
+  nextStop: 'Kwekwe, Zimbabwe',
+  distanceToNextStop: '210 km',
+  location: { lat: -17.8252, lng: 31.0335 }
+},
+
   'SHIP-005': {
     origin: 'Harare, Zimbabwe',
     destination: 'Bulawayo, Zimbabwe',
@@ -129,7 +130,7 @@ const zimbabweRoutes = {
     currentArea: 'Mutare CBD',
     currentLandmark: 'Zimpost Mutare',
     location: { lat: -18.9734, lng: 32.6665 },
-   
+
   },
   'SHIP-007': {
     origin: 'Harare, Zimbabwe',
@@ -145,7 +146,7 @@ const zimbabweRoutes = {
     distanceToNextStop: '85 km',
     location: { lat: -18.5333, lng: 32.1333 }
   },
- 
+
 'SHIP-008': {
   origin: 'Harare, Zimbabwe',
   destination: 'Mutare, Zimbabwe',

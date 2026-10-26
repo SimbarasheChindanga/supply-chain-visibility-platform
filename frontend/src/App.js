@@ -19,7 +19,11 @@ import zimbabweRoutes from './data/shipments';
 // ============================================
 // BACKEND API URL
 // ============================================
-const API_URL = 'http://localhost:5000';
+
+const API_URL = (
+  process.env.REACT_APP_API_URL || 'http://localhost:5000'
+).replace(/\/+$/, '');
+
 
 function App() {
   const { isAuthenticated, loading, user, logout } = useAuth();
@@ -79,36 +83,46 @@ const handleTrackShipment = async (event) => {
       throw new Error('Shipment was not found.');
     }
 
-    
     const localRoute = zimbabweRoutes[searchId] || {};
 
-    const shipmentData = {
-      ...shipment,
-      ...localRoute,
-      id: searchId,
-      shipmentId: shipment.shipmentId || searchId,
-      origin: shipment.origin || localRoute.origin,
-      destination: shipment.destination || localRoute.destination,
-      status: shipment.status || localRoute.status,
-      location: localRoute.location || shipment.location,
-      waypoints: localRoute.waypoints || [],
-      lastUpdate: new Date().toISOString(),
-    };
+const shipmentData = {
+  ...localRoute,
+  ...shipment,
+  id: searchId,
+  shipmentId: shipment.shipmentId || searchId,
+
+  // Keep backend operational fields authoritative.
+  origin: shipment.origin || localRoute.origin,
+  destination: shipment.destination || localRoute.destination,
+  status: shipment.status || localRoute.status,
+
+  // Retain frontend map details when the API does not provide them.
+  location: shipment.location || localRoute.location,
+  waypoints: Array.isArray(shipment.waypoints) && shipment.waypoints.length > 0
+    ? shipment.waypoints
+    : (localRoute.waypoints || []),
+
+  lastUpdate: shipment.updatedAt || new Date().toISOString(),
+};
 
     setTrackingData(shipmentData);
     sendShipmentNotification(shipmentData);
 
-  } catch (error) {
-    console.error('Error tracking shipment:', error);
+ } catch (error) {
+  console.error('Error tracking shipment:', error);
 
-    if (error.response?.status === 404) {
-      alert(`Shipment ${searchId} was not found in the database.`);
-    } else {
-      alert('Unable to retrieve shipment. Check the backend connection.');
-    }
-  } finally {
-    setLoadingShipment(false);
+  const status = error.response?.status;
+
+  if (status === 404) {
+    alert(`Shipment ${searchId} was not found in the database.`);
+  } else if (!error.response) {
+    alert('Unable to connect to the backend. Check that the server is running.');
+  } else {
+    alert(`Unable to retrieve shipment. Server returned status ${status}.`);
   }
+} finally {
+  setLoadingShipment(false);
+}
 };
   // Loading screen
   if (loading) {
@@ -227,7 +241,7 @@ const handleTrackShipment = async (event) => {
         <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
         <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to="/" />} />
         <Route path="/" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/analytics" element={isAuthenticated ? <Analytics shipments={zimbabweRoutes} /> : <Navigate to="/login" />} />
+        <Route path="/analytics" element={isAuthenticated ? <Analytics /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );

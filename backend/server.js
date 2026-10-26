@@ -27,21 +27,31 @@ const { findUserByUsernameOrEmail, validateUser, createUser } = require('./src/u
 const app = express();
 const server = http.createServer(app);
 
-// ✅ FIXED CORS - Allow all origins for testing
-const io = new Server(server, {
-    cors: {
-        origin: '*', // Allow all origins
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization"]
-    }
-});
+// CORS configuration for local development and deployment
+const allowedOrigins = (
+    process.env.FRONTEND_URL || 'http://localhost:3000'
+)
+    .split(',')
+    .map(origin => origin.trim().replace(/\/+$/, ''))
+    .filter(Boolean);
 
-// ✅ FIXED CORS - Allow all origins
-app.use(cors({
-    origin: '*',
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin.replace(/\/+$/, ''))) {
+            return callback(null, true);
+        }
+
+        return callback(new Error(`CORS blocked origin: ${origin}`));
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
-}));
+};
+
+const io = new Server(server, {
+    cors: corsOptions
+});
+
+app.use(cors(corsOptions));
 
 // Middleware
 app.use(express.json());
