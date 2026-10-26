@@ -1,4 +1,4 @@
-# 🚛 Supply Chain Visibility Platform - Zimbabwe
+# 🚛 Supply Chain Visibility Platform --- Zimbabwe
 
 ![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=flat&logo=react)
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=flat&logo=node.js)
@@ -6,395 +6,375 @@
 ![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?style=flat&logo=leaflet)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
----
+A full-stack shipment visibility application demonstrating shipment
+lookup, route visualization, shipment-status analytics, and browser
+notifications for a Zimbabwe-focused logistics use case.
+
+> **Project status:** Runs locally. A public demo has not been
+> published. Shipment records are seeded application data; do not
+> interpret the map as a live GPS feed unless a live tracking source has
+> been integrated and verified.
+
+------------------------------------------------------------------------
 
 ## 📋 Table of Contents
 
-- [Overview](#-overview)
-- [Business Problem](#-business-problem)
-- [Dataset](#-dataset)
-- [Technology Stack](#-technologies--libraries)
-- [Project Structure](#-project-structure)
-- [What Each Phase Contains](#-what-each-phase-contains)
-- [Key Findings](#-key-findings--insights)
-- [Key Metrics](#-key-metrics)
-- [Dashboard Screenshots](#-dashboard-screenshots)
-- [Installation & Usage](#-installation--usage)
-- [Recommendations](#-recommendations)
-- [Skills Demonstrated](#-skills-demonstrated)
-- [Author](#-author)
-- [License](#-license)
+-   [Overview](#-overview)
+-   [Business Problem](#-business-problem)
+-   [Dataset and Scope](#-dataset-and-scope)
+-   [Technology Stack](#-technology-stack)
+-   [Project Structure](#-project-structure)
+-   [Implemented Features](#-implemented-features)
+-   [Dashboard Screenshots](#-dashboard-screenshots)
+-   [Installation and Usage](#-installation-and-usage)
+-   [Configuration](#-configuration)
+-   [API and Verification](#-api-and-verification)
+-   [Recommendations](#-recommendations)
+-   [Skills Demonstrated](#-skills-demonstrated)
+-   [Author](#-author)
+-   [License](#-license)
+-   [Acknowledgements](#-acknowledgements)
 
----
+------------------------------------------------------------------------
 
 ## 🌍 Overview
 
-The **Supply Chain Visibility Platform** is a full-stack web application designed to provide real-time shipment tracking and logistics intelligence for Zimbabwean supply chains. The platform enables users to track 50+ shipments across all provinces, view interactive maps with route visualization, receive browser notifications for status changes, and access an analytics dashboard with key performance metrics.
+The **Supply Chain Visibility Platform** is a full-stack web application
+built around shipment tracking and logistics visibility for Zimbabwean
+routes. It provides shipment lookup, an interactive map, a shipment
+analytics dashboard, and browser notifications.
 
-Built with React, Node.js, Express, and Leaflet, this solution addresses the growing need for digital supply chain visibility in Zimbabwe's logistics sector, particularly for border crossings, intercity routes, and real-time status monitoring.
-
----
+The project demonstrates how a logistics application can bring shipment
+records and operational indicators into one interface. Its current
+records are seeded/demo data; live GPS ingestion and production
+deployment are not claimed as completed capabilities.
 
 ## 📋 Business Problem
 
-Zimbabwe's logistics industry faces several critical challenges:
+Logistics operators and customers can face challenges such as:
 
-- **Limited visibility** into shipment locations and statuses
-- **Border crossing delays** at Beitbridge, Chirundu, Nyamapanda, and Plumtree
-- **Poor road conditions** causing unpredictable delays
-- **Lack of real-time notifications** for customers and drivers
-- **No centralized platform** for tracking shipments across provinces
+-   Limited visibility into shipment status.
+-   Delays at border crossings and on intercity routes.
+-   Fragmented shipment information.
+-   Late communication when shipment status changes.
+-   Limited consolidated reporting on shipment activity.
 
-This platform solves these problems by providing:
-- Real-time tracking of 50+ shipments across Zimbabwe
-- Interactive map visualization with route lines and location markers
-- Automated browser notifications for status changes
-- Analytics dashboard with delivery rates and route performance
-- User authentication with role-based access (Admin, Driver, Customer)
+This prototype addresses these needs through shipment search, map-based
+route context, status summaries, and an analytics view.
 
----
+## 📊 Dataset and Scope
 
-## 📊 Dataset
+The application has been tested with **50 shipment records** covering
+routes associated with Zimbabwean cities and border points.
 
-The platform uses a curated dataset of **50 shipments** covering all major routes in Zimbabwe:
+Shipment records can include:
 
-| Category | Routes | Examples |
-|----------|--------|----------|
-| **Harare Province** | 15 | Harare → Bulawayo, Harare → Mutare, Harare → Beitbridge |
-| **Bulawayo Province** | 5 | Bulawayo → Harare, Bulawayo → Victoria Falls |
-| **Manicaland** | 4 | Mutare → Harare, Mutare → Nyamapanda |
-| **Matabeleland South** | 3 | Beitbridge → Harare, Beitbridge → Bulawayo |
-| **Matabeleland North** | 3 | Victoria Falls → Harare, Victoria Falls → Kariba |
-| **Midlands** | 5 | Gweru → Harare, Gweru → Bulawayo, Kwekwe → Harare |
-| **Other Regions** | 15 | Masvingo, Chiredzi, Kariba, Plumtree, Nyamapanda routes |
+-   Shipment identifier.
+-   Origin and destination.
+-   Route and location information used for map display.
+-   Estimated arrival information.
+-   Shipment status, such as In Transit, Delivered, Delayed, Pending, or
+    At Border.
 
-**Key Data Points:**
-- Origin & Destination (Zimbabwean cities)
-- Route names with distance (km)
-- Estimated Time of Arrival (ETA)
-- Real-time status (In Transit, Delivered, Delayed, Pending, At Border)
-- GPS coordinates for map visualization
+**Data limitation:** The presence of coordinates or a current-location
+marker does not by itself mean that live vehicle GPS data is being
+received. The current dataset should be treated as application/demo data
+unless a live feed is explicitly configured.
 
----
-
-## 🛠 Technologies & Libraries
+## 🛠 Technology Stack
 
 ### Frontend
-| Technology | Purpose |
-|------------|---------|
-| **React 18.2.0** | UI framework |
-| **React Router DOM** | Navigation & routing |
-| **Leaflet 1.9.4** | Interactive maps |
-| **React-Leaflet** | React wrapper for Leaflet |
-| **Recharts** | Analytics charts & graphs |
-| **Axios** | HTTP API requests |
-| **Socket.io-client** | Real-time WebSocket updates |
+
+  Technology                  Purpose
+  --------------------------- ---------------------------------
+  React                       User interface
+  React Router                Page navigation
+  Leaflet and React-Leaflet   Interactive maps
+  Recharts                    Analytics charts
+  Axios                       HTTP requests
+  Socket.IO client            Real-time communication support
 
 ### Backend
-| Technology | Purpose |
-|------------|---------|
-| **Node.js 18.x** | JavaScript runtime |
-| **Express 4.18.2** | REST API framework |
-| **JSON Web Token (JWT)** | User authentication |
-| **bcryptjs** | Password hashing |
-| **Socket.io** | Real-time WebSocket server |
-| **CORS** | Cross-origin resource sharing |
 
-### Authentication
-| Technology | Purpose |
-|------------|---------|
-| **JWT** | Secure token-based authentication |
-| **bcryptjs** | Password encryption |
-| **LocalStorage** | Client-side token storage |
+  Technology             Purpose
+  ---------------------- ------------------------------------
+  Node.js                JavaScript runtime
+  Express                REST API
+  MongoDB and Mongoose   Shipment persistence
+  Socket.IO              WebSocket communication
+  JSON Web Token (JWT)   Authentication support
+  bcryptjs               Password hashing
+  CORS                   Cross-origin request configuration
 
----
+The technologies listed above describe the project stack; individual
+production-readiness features, such as live GPS ingestion and deployed
+infrastructure, should be treated as future work unless separately
+configured.
 
 ## 📁 Project Structure
 
-```plaintext
+``` text
 03_supply_chain_visibility_platform/
-│
 ├── backend/
+│   ├── scripts/
+│   │   └── seedData.js
 │   ├── src/
 │   │   ├── models/
-│   │   │   └── User.js               # User schema (JSON storage)
-│   │   ├── routes/
-│   │   │   ├── testRoutes.js         # API test endpoints
-│   │   │   └── authRoutes.js         # Login/Register endpoints
-│   │   └── utils/
-│   │       └── userUtils.js          # User CRUD operations
-│   ├── scripts/
-│   │   └── seedData.js               # Data import script
-│   ├── .env                          # Environment variables
-│   ├── package.json                  # Backend dependencies
-│   ├── server.js                     # Express server entry point
-│   └── users.json                    # User database (JSON)
-│
+│   │   └── routes/
+│   ├── server.js
+│   └── package.json
 ├── frontend/
 │   ├── public/
-│   │   └── index.html                # HTML template
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── ShipmentMap.js        # Map component
-│   │   │   └── Navbar.js             # Navigation bar
 │   │   ├── context/
-│   │   │   └── AuthContext.js        # Auth state management
+│   │   ├── data/
 │   │   ├── pages/
-│   │   │   ├── Login.js              # Login page
-│   │   │   ├── Register.js           # Registration page
-│   │   │   └── Analytics.js          # Analytics dashboard
-│   │   ├── utils/
-│   │   │   └── notifications.js      # Browser notification utils
-│   │   ├── App.js                    # Main App component
-│   │   ├── App.css                   # App styles
-│   │   ├── index.js                  # Entry point
-│   │   └── index.css                 # Global styles
-│   ├── package.json                  # Frontend dependencies
-│   └── package-lock.json
-│
-├── database/
+│   │   └── utils/
+│   └── package.json
+├── screenshots/
 ├── docs/
-└── tests/
+├── tests/
+└── README.md
 ```
 
+This is a high-level overview; filenames may vary as the project
+evolves.
 
----
+## ✅ Implemented Features
 
-## 📊 What Each Phase Contains
+-   Shipment lookup by shipment ID.
+-   Shipment details and route map.
+-   Shipment records served by the backend API.
+-   Analytics for shipment volume, status distribution, delivery rate,
+    and routes.
+-   Browser notification functionality where browser permissions allow
+    it.
+-   MongoDB-backed shipment records.
+-   API handling for unknown shipment IDs.
 
-### Phase 1: Project Setup & Backend
-- Initialized Node.js backend with Express
-- Created project folder structure
-- Set up environment variables
-- Built test API endpoints
-
-### Phase 2: Frontend Development
-- Created React app with Create React App
-- Built shipment tracking dashboard
-- Integrated 50 Zimbabwean routes
-- Added search functionality with case-insensitive lookup
-
-### Phase 3: Interactive Mapping
-- Integrated Leaflet maps with OpenStreetMap
-- Added origin, destination, and current location markers
-- Implemented route lines with dashed styling
-- Zimbabwe-centered map with all provinces
-
-### Phase 4: Authentication System
-- Built JWT-based authentication
-- Created Login and Register pages
-- Implemented role-based access (Admin, Driver, Customer)
-- Added protected routes with navigation guards
-
-### Phase 5: Browser Notifications
-- Integrated Web Notification API
-- Status-based notifications (In Transit, Delivered, Delayed, At Border)
-- Permission request on login
-- Test notification button
-
-### Phase 6: Analytics Dashboard
-- Built with Recharts library
-- Status distribution pie chart
-- Top routes bar chart
-- Key metrics: Total Shipments, Delivery Rate, In Transit, Delayed
-
-### Phase 7: Zimbabwe-Specific Features
-- 50 unique routes covering all 10 provinces
-- Border crossing tracking (Beitbridge, Chirundu, Nyamapanda, Plumtree)
-- Localized statuses (Delayed - Road Conditions, At Border - Clearance)
-- Zimbabwe 🇿🇼 branding
-
----
-
-## 📈 Key Findings & Insights
-
-### 1. Route Distribution
-- **Harare** is the most connected hub with 30+ routes
-- **Border routes** account for 20% of all shipments
-- **Beitbridge** is the busiest border crossing
-
-### 2. Status Breakdown
-- **40% In Transit** – Active shipments currently moving
-- **24% Delivered** – Completed deliveries (12 shipments)
-- **14% At Border** – Shipments waiting at border crossings
-- **8% Pending** – Awaiting processing
-- **4% Delayed** – Affected by weather or road conditions
-
-### 3. Delivery Performance
-- **24% Overall Delivery Rate** – 12 of 50 shipments delivered
-- **Border routes** have the longest average delivery time
-- **Harare → Bulawayo** is the most frequently used route
-
-### 4. Geographic Coverage
-- All **10 provinces** of Zimbabwe represented
-- **4 border crossings** monitored
-- **5,000+ kilometers** of routes tracked
-
----
-
-## 📊 Key Metrics
-
-| Metric | Value |
-|--------|-------|
-| **Total Shipments** | 50 |
-| **Provinces Covered** | 10 |
-| **Unique Routes** | 50 |
-| **Border Crossings** | 4 |
-| **Delivery Rate** | 24% |
-| **In Transit** | 20 (40%) |
-| **Delivered** | 12 (24%) |
-| **At Border** | 7 (14%) |
-| **Delayed** | 2 (4%) |
-| **Pending** | 4 (8%) |
-| **Total Distance Tracked** | 5,000+ km |
-
----
+The frontend has compiled successfully, and the local API has previously
+been verified to return 50 shipment records. Analytics figures can
+change when the underlying dataset changes, so use the running
+application as the source of truth for current metrics.
 
 ## 📸 Dashboard Screenshots
+
 ### Login Page
+
 ![Login Page](screenshots/login.png)
 
 ### Main Dashboard
-![Dashboard](screenshots/dashboard.png)
 
-### Shipment Details with Map
-![Shipment Details](screenshots/shipment-details.png)
+![Main Dashboard](screenshots/dashboard.png)
+
+### Shipment Details and Map
+
+![Shipment Details](screenshots/shipment_details.png)
 
 ### Analytics Dashboard
-![Analytics](screenshots/analytics.png)
+
+![Analytics Dashboard](screenshots/analytics.png)
 
 ### Browser Notification
-![Notification](screenshots/notification.png)
 
----
+![Browser Notification](screenshots/notification.png)
 
-## 🌐 Live Demo
+> Confirm that each image exists in the `screenshots/` directory before
+> publishing. The shipment-details image reference uses
+> `shipment_details.png` (underscore).
 
-Try the live application at: [https://your-app.vercel.app](https://your-app.vercel.app)
-
-**Demo Credentials:**
-- Username: `admin`
-- Password: `password123`
-
-## 🚀 Installation & Usage
+## 🚀 Installation and Usage
 
 ### Prerequisites
-- **Node.js** (v18 or later)
-- **npm** (v9 or later)
-- **Git**
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/supply-chain-visibility-platform.git
+-   Node.js 18 or later.
+-   npm.
+-   Git.
+-   Access to a MongoDB database, either local or hosted.
+
+### 1. Clone the repository
+
+``` bash
+git clone https://github.com/SimbarasheChindanga/supply-chain-visibility-platform.git
 cd supply-chain-visibility-platform
 ```
 
-## 2. Backend Setup
+### 2. Configure and start the backend
 
+``` bash
 cd backend
 npm install
+```
+
+Create `backend/.env` using the configuration keys expected by the
+backend:
+
+``` env
+MONGODB_URI=your_mongodb_connection_string
+PORT=5000
+FRONTEND_URL=http://localhost:3000
+```
+
+Replace the MongoDB placeholder with your own connection string. Keep
+real credentials in `.env`; do not commit secrets.
+
+Start the backend using the script defined in `backend/package.json`
+(for this project, the development command has been `npm run dev`):
+
+``` bash
 npm run dev
+```
 
-Backend runs at: http://localhost:5000
+The API is expected at `http://localhost:5000` when `PORT=5000`.
 
-## 3. Frontend Setup
+### 3. Configure and start the frontend
 
+Open a second terminal at the repository root:
+
+``` bash
 cd frontend
 npm install
+```
+
+If needed, configure the frontend API base URL in `frontend/.env`:
+
+``` env
+REACT_APP_API_URL=http://localhost:5000
+```
+
+Then start the frontend:
+
+``` bash
 npm start
+```
 
-Frontend runs at: http://localhost:3000
+The frontend normally opens at `http://localhost:3000`. If port 3000 is
+already in use, the development server may offer another port; use the
+URL it prints.
 
-## 4. Test Credentials
-Username	Password	Role
-admin	password123	Admin
-driver1	password123	Driver
-customer1	password123	Customer
+### 4. Try shipment tracking
 
-## 5. Test Shipments
-ID	Route	Status
-SHIP-001	Harare → Bulawayo	In Transit
-SHIP-003	Harare → Beitbridge	In Transit
-SHIP-010	Beitbridge → Harare	At Border
-SHIP-004	Bulawayo → Vic Falls	Delayed
+Use a shipment ID that exists in the database, such as `SHIP-001`. An
+unknown ID such as `SHIP-999` should produce a not-found response.
+
+### 5. View analytics
+
+Open the Analytics page to see summaries calculated from the current
+shipment records. Metrics may differ from screenshots or earlier runs if
+the dataset has changed.
+
+## ⚙️ Configuration
+
+  -----------------------------------------------------------------------------------------------------
+  Variable                Purpose                 Example
+  ----------------------- ----------------------- -----------------------------------------------------
+  `MONGODB_URI`           MongoDB connection      `mongodb://127.0.0.1:27017/supply_chain_visibility`
+                          string                  
+
+  `PORT`                  Backend port            `5000`
+
+  `FRONTEND_URL`          Allowed frontend origin `http://localhost:3000`
+                          for CORS                
+
+  `REACT_APP_API_URL`     Frontend API base URL   `http://localhost:5000`
+  -----------------------------------------------------------------------------------------------------
+
+Use environment-specific values for deployment. Do not publish database
+passwords, JWT secrets, or other credentials in this README or in source
+control.
+
+## 🔎 API and Verification
+
+The local API was previously checked for the following behaviours:
+
+-   The shipment endpoint returned 50 records.
+-   A known shipment ID (`SHIP-001`) returned a shipment.
+-   An unknown shipment ID (`SHIP-999`) returned a not-found response.
+-   The frontend production build completed successfully.
+
+These checks describe the previously tested local version, not a
+guarantee that a remote deployment is currently available.
 
 ## 💡 Recommendations
-## 1. Database Integration
 
-Replace JSON storage with MongoDB or PostgreSQL
+### 1. Data quality and database reliability
 
-Enable persistent data across server restarts
+-   Validate shipment fields and status values.
+-   Add indexes for frequently queried fields such as shipment ID.
+-   Add database backup and recovery procedures.
+-   Improve structured logging and operational error reporting.
 
-## 2. Real-Time Tracking
-Connect WebSocket to live GPS data
+### 2. Live tracking integration
 
-Add real-time position updates on map
+-   Integrate a verified GPS or telematics data source.
+-   Timestamp and validate incoming location updates.
+-   Display the age of the last location update so stale data is
+    visible.
 
-## 3. Mobile Application
-Build React Native or Flutter app
+### 3. Border and delay intelligence
 
-Enable on-the-go tracking for drivers
+-   Record border arrival, clearance, and departure timestamps.
+-   Measure dwell time at border crossings.
+-   Compare estimated and actual arrival times when actual delivery data
+    is available.
 
-## 4. Notification Expansion
-Add email notifications (Nodemailer)
+### 4. Notifications
 
-Implement SMS alerts (Twilio)
+-   Add configurable email or SMS notifications.
+-   Let users choose which shipment events trigger alerts.
+-   Record notification delivery outcomes.
 
-Push notifications for mobile
+### 5. Analytics
 
-## 5. Advanced Analytics
-Predictive ETA using machine learning
+-   Add on-time delivery and delay-duration measures when reliable
+    timestamps are available.
+-   Compare route performance over time.
+-   Add cost analysis and predictive ETA only when suitable historical
+    data is available.
 
-Route optimization algorithms
+### 6. Security and deployment
 
-Cost analysis per shipment
-
-## 6. User Experience
-Add dark mode toggle
-
-Export reports (PDF/CSV)
-
-Multi-language support (English/Shona/Ndebele)
-
-## 7. Deployment
-Deploy frontend to Vercel/Netlify
-
-Deploy backend to Render/Heroku
-
-Set up CI/CD pipeline
+-   Verify authentication and authorization flows.
+-   Keep secrets in environment variables or a secrets manager.
+-   Deploy the frontend and backend, configure production CORS, and
+    document the public URL only after verifying the deployment.
+-   Add automated tests and CI checks.
 
 ## 🏆 Skills Demonstrated
 
-| Skill Category | Specific Skills |
-|----------------|-----------------|
-| **Frontend** | React, Hooks, State Management, React Router, Axios |
-| **Backend** | Node.js, Express, REST APIs, WebSockets |
-| **Authentication** | JWT, bcrypt, Role-Based Access Control |
-| **Data Visualization** | Recharts, Pie/Bar Charts, Analytics Dashboard |
-| **Mapping** | Leaflet, OpenStreetMap, GPS Coordinates |
-| **Security** | Password Hashing, Token Authentication, CORS |
-| **Real-Time** | Socket.io, WebSocket Communication |
-| **UI/UX** | Responsive Design, Browser Notifications |
-| **API Development** | RESTful Endpoints, Error Handling, Testing |
-| **Project Management** | Git, GitHub, Project Structure, Documentation |
+  Skill Category            Skills
+  ------------------------- ------------------------------------------------------
+  Frontend                  React, component-based UI, routing, state management
+  Backend                   Node.js, Express, REST API development
+  Data and persistence      MongoDB, Mongoose, seeded datasets
+  Data visualization        Recharts, shipment-status and route analytics
+  Mapping                   Leaflet, route and location visualization
+  Security                  JWT concepts, password hashing, CORS configuration
+  Real-time communication   Socket.IO/WebSocket integration
+  Project delivery          Git, GitHub, documentation, testing and debugging
 
 ## Author
 
 **Simbarashe Chindanga**
 
-- **Role:** Aspiring Transport Technology Specialist
-- **Focus:** Supply Chain Visibility, Data Analytics, and Full-Stack Development
-- **Location:** Zimbabwe
-- **GitHub Portfolio:** [SimbarasheChindanga](https://github.com/SimbarasheChindanga)
-- **Email:** [chindangasimbarashe02@gmail.com](mailto:chindangasimbarashe02@gmail.com)
+-   **Role:** Aspiring Transport Technology Specialist
+-   **Focus:** Supply Chain Visibility, Data Analytics, and Full-Stack
+    Development
+-   **Location:** Zimbabwe
+-   **GitHub:**
+    [SimbarasheChindanga](https://github.com/SimbarasheChindanga)
+-   **Email:** <chindangasimbarashe02@gmail.com>
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the
+[LICENSE](LICENSE) file for details.
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
-- [OpenStreetMap](https://www.openstreetmap.org/) for map data and tiles.
-- [Leaflet](https://leafletjs.com/) for interactive mapping.
-- [Recharts](https://recharts.org/) for data visualization.
-- [MongoDB](https://www.mongodb.com/) for database technology.
+-   [OpenStreetMap](https://www.openstreetmap.org/) for map data and
+    tiles.
+-   [Leaflet](https://leafletjs.com/) for interactive mapping.
+-   [Recharts](https://recharts.org/) for data visualization.
+-   [MongoDB](https://www.mongodb.com/) for database technology.
