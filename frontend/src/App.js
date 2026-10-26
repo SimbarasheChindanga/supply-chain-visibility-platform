@@ -19,7 +19,7 @@ import zimbabweRoutes from './data/shipments';
 // ============================================
 // BACKEND API URL
 // ============================================
-const API_URL = 'https://supply-chain-api-gbnr.onrender.com';
+const API_URL = 'http://localhost:5000';
 
 function App() {
   const { isAuthenticated, loading, user, logout } = useAuth();
@@ -53,33 +53,63 @@ function App() {
   };
 
   // Track Shipment - Case Insensitive with Notifications
-  const trackShipment = async (e) => {
-    e.preventDefault();
-    if (!shipmentId.trim()) return;
+  
 
-    setLoadingShipment(true);
-    try {
-      const searchId = shipmentId.trim().toUpperCase();
-      const shipment = zimbabweRoutes[searchId];
+const handleTrackShipment = async (event) => {
+  if (event) event.preventDefault();
 
-      if (shipment) {
-        const shipmentData = {
-          id: searchId,
-          ...shipment,
-          lastUpdate: new Date().toISOString(),
-        };
-        setTrackingData(shipmentData);
-        sendShipmentNotification(shipmentData);
-      } else {
-        alert('Shipment not found. Try SHIP-001 to SHIP-050');
-        setTrackingData(null);
-      }
-    } catch (error) {
-      console.error('Error tracking shipment:', error);
+  const searchId = shipmentId.trim().toUpperCase();
+
+  if (!searchId) {
+    alert('Please enter a shipment ID.');
+    return;
+  }
+
+  setLoadingShipment(true);
+  setTrackingData(null);
+
+  try {
+    const response = await axios.get(
+      `${API_URL}/api/shipments/${searchId}`
+    );
+
+    const shipment = response.data.data;
+
+    if (!response.data.success || !shipment) {
+      throw new Error('Shipment was not found.');
     }
-    setLoadingShipment(false);
-  };
 
+    
+    const localRoute = zimbabweRoutes[searchId] || {};
+
+    const shipmentData = {
+      ...shipment,
+      ...localRoute,
+      id: searchId,
+      shipmentId: shipment.shipmentId || searchId,
+      origin: shipment.origin || localRoute.origin,
+      destination: shipment.destination || localRoute.destination,
+      status: shipment.status || localRoute.status,
+      location: localRoute.location || shipment.location,
+      waypoints: localRoute.waypoints || [],
+      lastUpdate: new Date().toISOString(),
+    };
+
+    setTrackingData(shipmentData);
+    sendShipmentNotification(shipmentData);
+
+  } catch (error) {
+    console.error('Error tracking shipment:', error);
+
+    if (error.response?.status === 404) {
+      alert(`Shipment ${searchId} was not found in the database.`);
+    } else {
+      alert('Unable to retrieve shipment. Check the backend connection.');
+    }
+  } finally {
+    setLoadingShipment(false);
+  }
+};
   // Loading screen
   if (loading) {
     return <div className="loading-screen">Loading...</div>;
@@ -124,7 +154,7 @@ function App() {
       <main className="App-main">
         <section className="tracking-section">
           <h2>Track Your Shipment</h2>
-          <form onSubmit={trackShipment} className="tracking-form">
+          <form onSubmit={handleTrackShipment} className="tracking-form">
             <input
               type="text"
               placeholder="Enter Shipment ID (e.g., SHIP-001)"

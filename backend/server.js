@@ -9,13 +9,16 @@ const http = require('http');
 const { Server } = require('socket.io');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
+const path = require('path');
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 // Import routes
 const testRoutes = require('./src/routes/testRoutes');
 const authRoutes = require('./src/routes/authRoutes');
+const shipmentRoutes = require('./src/routes/shipmentRoutes');
 
 // Import user utilities
 const { findUserByUsernameOrEmail, validateUser, createUser } = require('./src/utils/userUtils');
@@ -54,6 +57,8 @@ app.use('/api', testRoutes);
 // Auth routes
 app.use('/api/auth', authRoutes);
 
+app.use('/api/shipments', shipmentRoutes);
+
 // ============================================
 // WEBSOCKET CONNECTION
 // ============================================
@@ -80,18 +85,38 @@ io.on('connection', (socket) => {
 // START SERVER
 // ============================================
 
+
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📡 WebSocket ready for real-time updates`);
-    console.log(`🔄 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`\n📋 Available endpoints:`);
-    console.log(`   GET  http://localhost:${PORT}/api/test`);
-    console.log(`   GET  http://localhost:${PORT}/api/health`);
-    console.log(`   POST http://localhost:${PORT}/api/auth/register`);
-    console.log(`   POST http://localhost:${PORT}/api/auth/login`);
-});
+async function startServer() {
+    try {
+        if (!process.env.MONGODB_URI) {
+            throw new Error('MONGODB_URI is missing from backend/.env');
+        }
+
+        await mongoose.connect(process.env.MONGODB_URI, {
+            serverSelectionTimeoutMS: 10000
+        });
+
+        console.log('✅ MongoDB connected successfully.');
+
+        server.listen(PORT, () => {
+            console.log(`🚀 Server running on http://localhost:${PORT}`);
+            console.log(`📡 WebSocket ready for real-time updates`);
+            console.log(`🔄 Environment: ${process.env.NODE_ENV || 'development'}`);
+            console.log(`\n📋 Available endpoints:`);
+            console.log(`   GET  http://localhost:${PORT}/api/test`);
+            console.log(`   GET  http://localhost:${PORT}/api/health`);
+            console.log(`   GET  http://localhost:${PORT}/api/shipments`);
+            console.log(`   POST http://localhost:${PORT}/api/auth/register`);
+            console.log(`   POST http://localhost:${PORT}/api/auth/login`);
+        });
+    } catch (error) {
+        console.error('❌ Backend startup failed:', error.message);
+        process.exit(1);
+    }
+}
+startServer();
 
 process.on('SIGINT', () => {
     console.log('\n🛑 Shutting down server gracefully...');

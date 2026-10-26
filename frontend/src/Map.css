@@ -96,3 +96,58 @@
     height: 300px !important;
   }
 }
+
+/* Keep the current shipment location easy to read */
+.current-location-tooltip {
+  background: #ffffff;
+  color: #111827;
+  border: 2px solid #16a34a;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.current-location-tooltip::before {
+  border-top-color: #16a34a;
+}
+
+/* Shipment map controls */
+.map-view-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 0 0 12px 0;
+}
+
+.map-view-controls button {
+  appearance: none;
+  padding: 10px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.map-view-controls button:hover:not(:disabled) {
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+.map-view-controls button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 2px;
+}
+
+.map-view-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+

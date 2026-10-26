@@ -3,58 +3,85 @@
 // With detailed current location tracking
 // ============================================
 
+// Demo-only ETA generator; not a live prediction.
+const getDemoEta = (status, distance) => {
+  const now = new Date();
+  const km = Number.parseInt(distance, 10) || 100;
+  const hours = Math.max(3, Math.ceil(km / 55));
+  const delivered = String(status).toLowerCase() === 'delivered';
+  now.setHours(now.getHours() + (delivered ? -Math.min(hours, 48) : hours));
+  const pad = n => String(n).padStart(2, '0');
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+};
 const zimbabweRoutes = {
   // ============================================
-  // HARARE → BULAWAYO (5 shipments - popular route)
+  // HARARE to BULAWAYO (5 shipments - popular route)
   // ============================================
-   'SHIP-001': {
+  'SHIP-001': {
     origin: 'Harare, Zimbabwe',
     destination: 'Bulawayo, Zimbabwe',
-    route: 'Harare → Bulawayo',
+    route: 'Harare to Bulawayo',
     distance: '440 km',
-    eta: '2026-08-07 16:30',
+    eta: getDemoEta('In Transit', '440 km'),
     status: 'In Transit',
-    currentArea: 'Kwekwe Service Station',
+    currentArea: 'CMED KWEKWE Fuel Station',
     currentRoad: 'A5 Highway',
-    currentLandmark: 'Near OK Zimbabwe Kwekwe',
-    nextStop: 'Gweru, Zimbabwe',
+    currentLandmark: 'CMED KWEKWE',
     distanceToNextStop: '90 km',
-    location: { lat: -18.9286, lng: 29.8149 }
+    location: { lat: -18.9156392, lng: 29.8176033 },
+    // NEW: Route Waypoints
+    waypoints: [
+      { name: 'Harare', lat: -17.8252, lng: 31.0335 },
+      { name: 'Chegutu', lat: -18.1333, lng: 30.1500 },
+      { name: 'Kadoma', lat: -18.3333, lng: 29.9167 },
+      { name: 'Kwekwe', lat: -18.9286, lng: 29.8149 },
+      { name: 'Gweru', lat: -19.4550, lng: 29.8100 },
+      { name: 'Bulawayo', lat: -20.1486, lng: 28.5877 }
+    ]
   },
   'SHIP-002': {
     origin: 'Harare, Zimbabwe',
     destination: 'Bulawayo, Zimbabwe',
-    route: 'Harare → Bulawayo',
+    route: 'Harare to Bulawayo',
     distance: '440 km',
-    eta: '2026-08-08 10:00',
+    eta: getDemoEta('In Transit', '440 km'),
     status: 'In Transit',
-    currentArea: 'Gweru CBD',
+    currentArea: 'Gweru Terminus Bus Station',
     currentRoad: 'A5 Highway',
-    currentLandmark: 'Gweru Bus Terminus',
+    currentLandmark: 'Terminus Bus Station',
     nextStop: 'Bulawayo, Zimbabwe',
     distanceToNextStop: '165 km',
-    location: { lat: -19.4550, lng: 29.8100 }
+    location: { lat: -19.45506, lng: 29.81279 },
+    waypoints: [
+      { name: 'Harare', lat: -17.8252, lng: 31.0335 },
+      { name: 'Chegutu', lat: -18.1333, lng: 30.1500 },
+      { name: 'Kadoma', lat: -18.3333, lng: 29.9167 },
+      { name: 'Kwekwe', lat: -18.9286, lng: 29.8149 },
+      { name: 'Gweru', lat: -19.4550, lng: 29.8100 },
+      { name: 'Bulawayo', lat: -20.1486, lng: 28.5877 }
+    ]
   },
   'SHIP-003': {
     origin: 'Harare, Zimbabwe',
     destination: 'Bulawayo, Zimbabwe',
-    route: 'Harare → Bulawayo',
+    route: 'Harare to Bulawayo',
     distance: '440 km',
-    eta: '2026-08-06 14:00',
+    eta: getDemoEta('Delivered', '440 km'),
     status: 'Delivered',
-    currentArea: 'Bulawayo CBD',
     currentRoad: 'Joshua Mqabuko Nkomo Street',
-    currentLandmark: 'Bulawayo City Hall',
     nextStop: 'Delivered',
     distanceToNextStop: '0 km',
-    location: { lat: -20.1486, lng: 28.5877 }
+    currentArea: 'Bulawayo CBD',
+    currentLandmark: 'BCC Tower Block (mapped town hall)',
+    location: { lat: -20.15504, lng: 28.58802 },
+    
   },
   'SHIP-004': {
     origin: 'Harare, Zimbabwe',
     destination: 'Bulawayo, Zimbabwe',
-    route: 'Harare → Bulawayo',
+    route: 'Harare to Bulawayo',
     distance: '440 km',
-    eta: '2026-08-09 11:30',
+    eta: getDemoEta('Pending', '440 km'),
     status: 'Pending',
     currentArea: 'Harare Depot',
     currentRoad: 'Willowvale Industrial Park',
@@ -66,41 +93,50 @@ const zimbabweRoutes = {
   'SHIP-005': {
     origin: 'Harare, Zimbabwe',
     destination: 'Bulawayo, Zimbabwe',
-    route: 'Harare → Bulawayo',
+    route: 'Harare to Bulawayo',
     distance: '440 km',
-    eta: '2026-08-08 15:00',
+    eta: getDemoEta('In Transit', '440 km'),
     status: 'In Transit',
     currentArea: 'Chegutu Tollgate',
     currentRoad: 'A5 Highway',
     currentLandmark: 'Chegutu Toll Plaza',
     nextStop: 'Kadoma, Zimbabwe',
     distanceToNextStop: '45 km',
-    location: { lat: -18.1333, lng: 30.1500 }
+    location: { lat: -18.1333, lng: 30.1500 },
+    waypoints: [
+      { name: 'Harare', lat: -17.8252, lng: 31.0335 },
+      { name: 'Chegutu', lat: -18.1333, lng: 30.1500 },
+      { name: 'Kadoma', lat: -18.3333, lng: 29.9167 },
+      { name: 'Kwekwe', lat: -18.9286, lng: 29.8149 },
+      { name: 'Gweru', lat: -19.4550, lng: 29.8100 },
+      { name: 'Bulawayo', lat: -20.1486, lng: 28.5877 }
+    ]
   },
 
   // ============================================
-  // HARARE → MUTARE (4 shipments)
+  // HARARE to MUTARE (4 shipments)
   // ============================================
   'SHIP-006': {
     origin: 'Harare, Zimbabwe',
     destination: 'Mutare, Zimbabwe',
-    route: 'Harare → Mutare',
+    route: 'Harare to Mutare',
     distance: '263 km',
-    eta: '2026-08-07 12:00',
+    eta: getDemoEta('Delivered', '263 km'),
     status: 'Delivered',
-    currentArea: 'Mutare CBD',
     currentRoad: 'Herbert Chitepo Street',
-    currentLandmark: 'Mutare Main Post Office',
     nextStop: 'Delivered',
     distanceToNextStop: '0 km',
-    location: { lat: -18.9758, lng: 32.6707 }
+    currentArea: 'Mutare CBD',
+    currentLandmark: 'Zimpost Mutare',
+    location: { lat: -18.9734, lng: 32.6665 },
+   
   },
   'SHIP-007': {
     origin: 'Harare, Zimbabwe',
     destination: 'Mutare, Zimbabwe',
-    route: 'Harare → Mutare',
+    route: 'Harare to Mutare',
     distance: '263 km',
-    eta: '2026-08-08 09:30',
+    eta: getDemoEta('In Transit', '263 km'),
     status: 'In Transit',
     currentArea: 'Rusape',
     currentRoad: 'A3 Highway',
@@ -109,26 +145,28 @@ const zimbabweRoutes = {
     distanceToNextStop: '85 km',
     location: { lat: -18.5333, lng: 32.1333 }
   },
-  'SHIP-008': {
-    origin: 'Harare, Zimbabwe',
-    destination: 'Mutare, Zimbabwe',
-    route: 'Harare → Mutare',
-    distance: '263 km',
-    eta: '2026-08-08 14:00',
-    status: 'In Transit',
-    currentArea: 'Nyanga Turn-off',
-    currentRoad: 'A3 Highway',
-    currentLandmark: 'Nyanga Junction',
-    nextStop: 'Mutare, Zimbabwe',
-    distanceToNextStop: '40 km',
-    location: { lat: -18.2500, lng: 32.5000 }
-  },
+ 
+'SHIP-008': {
+  origin: 'Harare, Zimbabwe',
+  destination: 'Mutare, Zimbabwe',
+  route: 'Harare to Mutare',
+  distance: '263 km',
+  eta: getDemoEta('In Transit', '263 km'),
+  status: 'In Transit',
+  currentArea: 'Rusape',
+  currentRoad: 'A3 Highway',
+  currentLandmark: 'A3 / A14 Junction',
+  nextStop: 'Mutare, Zimbabwe',
+  distanceToNextStop: '95 km',
+  location: { lat: -18.5336, lng: 32.1240 }
+},
+
   'SHIP-009': {
     origin: 'Harare, Zimbabwe',
     destination: 'Mutare, Zimbabwe',
-    route: 'Harare → Mutare',
+    route: 'Harare to Mutare',
     distance: '263 km',
-    eta: '2026-08-07 16:00',
+    eta: getDemoEta('Delivered', '263 km'),
     status: 'Delivered',
     currentArea: 'Mutare Industrial Area',
     currentRoad: 'Manchester Road',
@@ -139,28 +177,36 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // HARARE → BEITBRIDGE (4 shipments - border route)
+  // HARARE to BEITBRIDGE (4 shipments - border route)
   // ============================================
-  'SHIP-010': {
+   'SHIP-010': {
     origin: 'Harare, Zimbabwe',
     destination: 'Beitbridge, Zimbabwe',
-    route: 'Harare → Beitbridge (Border)',
+    route: 'Harare to Beitbridge (Border)',
     distance: '580 km',
-    eta: '2026-08-08 09:00',
+    eta: getDemoEta('In Transit', '580 km'),
     status: 'In Transit',
     currentArea: 'Chivhu',
     currentRoad: 'A4 Highway',
     currentLandmark: 'Chivhu Service Station',
     nextStop: 'Masvingo, Zimbabwe',
     distanceToNextStop: '150 km',
-    location: { lat: -19.0000, lng: 30.8833 }
+    location: { lat: -19.0000, lng: 30.8833 },
+    // NEW: Route Waypoints
+    waypoints: [
+      { name: 'Harare', lat: -17.8252, lng: 31.0335 },
+      { name: 'Chivhu', lat: -19.0000, lng: 30.8833 },
+      { name: 'Masvingo', lat: -20.0625, lng: 30.8300 },
+      { name: 'Ngundu', lat: -20.7500, lng: 30.9667 },
+      { name: 'Beitbridge', lat: -22.2150, lng: 30.0000 }
+    ]
   },
     'SHIP-011': {
     origin: 'Harare, Zimbabwe',
     destination: 'Beitbridge, Zimbabwe',
-    route: 'Harare → Beitbridge (Border)',
+    route: 'Harare to Beitbridge (Border)',
     distance: '580 km',
-    eta: '2026-08-09 11:00',
+    eta: getDemoEta('At Border - Clearance', '580 km'),
     status: 'At Border - Clearance',
     currentArea: 'Beitbridge Border Post',
     currentRoad: 'A6 Highway',
@@ -172,9 +218,9 @@ const zimbabweRoutes = {
   'SHIP-012': {
     origin: 'Harare, Zimbabwe',
     destination: 'Beitbridge, Zimbabwe',
-    route: 'Harare → Beitbridge (Border)',
+    route: 'Harare to Beitbridge (Border)',
     distance: '580 km',
-    eta: '2026-08-08 16:30',
+    eta: getDemoEta('In Transit', '580 km'),
     status: 'In Transit',
     currentArea: 'Masvingo CBD',
     currentRoad: 'Robert Mugabe Street',
@@ -186,9 +232,9 @@ const zimbabweRoutes = {
   'SHIP-013': {
     origin: 'Harare, Zimbabwe',
     destination: 'Beitbridge, Zimbabwe',
-    route: 'Harare → Beitbridge (Border)',
+    route: 'Harare to Beitbridge (Border)',
     distance: '580 km',
-    eta: '2026-08-07 18:00',
+    eta: getDemoEta('Delivered', '580 km'),
     status: 'Delivered',
     currentArea: 'Beitbridge Town',
     currentRoad: 'Border Road',
@@ -199,14 +245,14 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // HARARE → VICTORIA FALLS (3 shipments)
+  // HARARE to VICTORIA FALLS (3 shipments)
   // ============================================
   'SHIP-014': {
     origin: 'Harare, Zimbabwe',
     destination: 'Victoria Falls, Zimbabwe',
-    route: 'Harare → Victoria Falls',
+    route: 'Harare to Victoria Falls',
     distance: '750 km',
-    eta: '2026-08-09 14:00',
+    eta: getDemoEta('In Transit', '750 km'),
     status: 'In Transit',
     currentArea: 'Chinhoyi',
     currentRoad: 'A1 Highway',
@@ -218,9 +264,9 @@ const zimbabweRoutes = {
   'SHIP-015': {
     origin: 'Harare, Zimbabwe',
     destination: 'Victoria Falls, Zimbabwe',
-    route: 'Harare → Victoria Falls',
+    route: 'Harare to Victoria Falls',
     distance: '750 km',
-    eta: '2026-08-10 10:00',
+    eta: getDemoEta('In Transit', '750 km'),
     status: 'In Transit',
     currentArea: 'Hwange',
     currentRoad: 'A8 Highway',
@@ -232,9 +278,9 @@ const zimbabweRoutes = {
   'SHIP-016': {
     origin: 'Harare, Zimbabwe',
     destination: 'Victoria Falls, Zimbabwe',
-    route: 'Harare → Victoria Falls',
+    route: 'Harare to Victoria Falls',
     distance: '750 km',
-    eta: '2026-08-08 12:00',
+    eta: getDemoEta('Delivered', '750 km'),
     status: 'Delivered',
     currentArea: 'Victoria Falls Town',
     currentRoad: 'Livingstone Way',
@@ -245,14 +291,14 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // HARARE → GWERU (3 shipments)
+  // HARARE to GWERU (3 shipments)
   // ============================================
     'SHIP-017': {
     origin: 'Bulawayo, Zimbabwe',
     destination: 'Victoria Falls, Zimbabwe',
-    route: 'Bulawayo → Victoria Falls',
+    route: 'Bulawayo to Victoria Falls',
     distance: '440 km',
-    eta: '2026-08-08 16:30',
+    eta: getDemoEta('In Transit', '440 km'),
     status: 'In Transit',
     currentArea: 'Hwange Truck Stop',
     currentRoad: 'A8 Highway',
@@ -264,23 +310,23 @@ const zimbabweRoutes = {
   'SHIP-018': {
     origin: 'Harare, Zimbabwe',
     destination: 'Gweru, Zimbabwe',
-    route: 'Harare → Gweru',
+    route: 'Harare to Gweru',
     distance: '275 km',
-    eta: '2026-08-07 14:00',
+    eta: getDemoEta('Delivered', '275 km'),
     status: 'Delivered',
-    currentArea: 'Gweru CBD',
     currentRoad: 'Robert Mugabe Way',
-    currentLandmark: 'Gweru Main Post Office',
     nextStop: 'Delivered',
     distanceToNextStop: '0 km',
-    location: { lat: -19.4550, lng: 29.8100 }
+    currentArea: 'Gweru CBD',
+    currentLandmark: 'Gweru Post Office',
+    location: { lat: -19.45687, lng: 29.81392 },
   },
   'SHIP-019': {
     origin: 'Harare, Zimbabwe',
     destination: 'Gweru, Zimbabwe',
-    route: 'Harare → Gweru',
+    route: 'Harare to Gweru',
     distance: '275 km',
-    eta: '2026-08-08 10:00',
+    eta: getDemoEta('In Transit', '275 km'),
     status: 'In Transit',
     currentArea: 'Kwekwe',
     currentRoad: 'A5 Highway',
@@ -291,14 +337,14 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // HARARE → MASVINGO (3 shipments)
+  // HARARE to MASVINGO (3 shipments)
   // ============================================
   'SHIP-020': {
     origin: 'Harare, Zimbabwe',
     destination: 'Masvingo, Zimbabwe',
-    route: 'Harare → Masvingo',
+    route: 'Harare to Masvingo',
     distance: '295 km',
-    eta: '2026-08-08 08:00',
+    eta: getDemoEta('Pending', '295 km'),
     status: 'Pending',
     currentArea: 'Harare Depot',
     currentRoad: 'Simon Mazorodze Road',
@@ -310,9 +356,9 @@ const zimbabweRoutes = {
   'SHIP-021': {
     origin: 'Harare, Zimbabwe',
     destination: 'Masvingo, Zimbabwe',
-    route: 'Harare → Masvingo',
+    route: 'Harare to Masvingo',
     distance: '295 km',
-    eta: '2026-08-08 14:00',
+    eta: getDemoEta('In Transit', '295 km'),
     status: 'In Transit',
     currentArea: 'Chivhu',
     currentRoad: 'A4 Highway',
@@ -324,9 +370,9 @@ const zimbabweRoutes = {
   'SHIP-022': {
     origin: 'Harare, Zimbabwe',
     destination: 'Masvingo, Zimbabwe',
-    route: 'Harare → Masvingo',
+    route: 'Harare to Masvingo',
     distance: '295 km',
-    eta: '2026-08-07 12:00',
+    eta: getDemoEta('Delivered', '295 km'),
     status: 'Delivered',
     currentArea: 'Masvingo CBD',
     currentRoad: 'Hughes Street',
@@ -337,42 +383,42 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // BULAWAYO → HARARE (3 shipments)
+  // BULAWAYO to HARARE (3 shipments)
   // ============================================
   'SHIP-023': {
     origin: 'Bulawayo, Zimbabwe',
     destination: 'Harare, Zimbabwe',
-    route: 'Bulawayo → Harare',
+    route: 'Bulawayo to Harare',
     distance: '440 km',
-    eta: '2026-08-08 10:00',
+    eta: getDemoEta('In Transit', '440 km'),
     status: 'In Transit',
     currentArea: 'Gweru',
     currentRoad: 'A5 Highway',
     currentLandmark: 'Gweru Midlands Hotel',
     nextStop: 'Kwekwe, Zimbabwe',
     distanceToNextStop: '90 km',
-    location: { lat: -19.4550, lng: 29.8100 }
+   location: { lat: -19.45292, lng: 29.81551 }
   },
      'SHIP-024': {
     origin: 'Bulawayo, Zimbabwe',
     destination: 'Harare, Zimbabwe',
-    route: 'Bulawayo → Harare',
+    route: 'Bulawayo to Harare',
     distance: '440 km',
-    eta: '2026-08-07 15:00',
+    eta: getDemoEta('Delivered', '440 km'),
     status: 'Delivered',
     currentArea: 'Harare CBD',
     currentRoad: 'Samora Machel Avenue',
     currentLandmark: 'Harare Central Police Station',
     nextStop: 'Delivered',
     distanceToNextStop: '0 km',
-    location: { lat: -17.8252, lng: 31.0335 }
+    location: { lat: -17.83497, lng: 31.04802 }
   },
   'SHIP-025': {
     origin: 'Bulawayo, Zimbabwe',
     destination: 'Harare, Zimbabwe',
-    route: 'Bulawayo → Harare',
+    route: 'Bulawayo to Harare',
     distance: '440 km',
-    eta: '2026-08-09 14:00',
+    eta: getDemoEta('Pending', '440 km'),
     status: 'Pending',
     currentArea: 'Bulawayo Depot',
     currentRoad: 'Doncaster Road',
@@ -383,14 +429,14 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // BULAWAYO → VICTORIA FALLS (3 shipments)
+  // BULAWAYO to VICTORIA FALLS (3 shipments)
   // ============================================
   'SHIP-026': {
     origin: 'Bulawayo, Zimbabwe',
     destination: 'Victoria Falls, Zimbabwe',
-    route: 'Bulawayo → Victoria Falls',
+    route: 'Bulawayo to Victoria Falls',
     distance: '440 km',
-    eta: '2026-08-08 16:30',
+    eta: getDemoEta('Delayed - Weather', '440 km'),
     status: 'Delayed - Weather',
     currentArea: 'Hwange',
     currentRoad: 'A8 Highway',
@@ -402,41 +448,41 @@ const zimbabweRoutes = {
   'SHIP-027': {
     origin: 'Bulawayo, Zimbabwe',
     destination: 'Victoria Falls, Zimbabwe',
-    route: 'Bulawayo → Victoria Falls',
+    route: 'Bulawayo to Victoria Falls',
     distance: '440 km',
-    eta: '2026-08-09 12:00',
+    eta: getDemoEta('In Transit', '440 km'),
     status: 'In Transit',
     currentArea: 'Lupane',
     currentRoad: 'A8 Highway',
     currentLandmark: 'Lupane State University',
     nextStop: 'Hwange, Zimbabwe',
     distanceToNextStop: '200 km',
-    location: { lat: -18.9333, lng: 27.8000 }
+    location: { lat: -18.95091, lng: 27.75909 }
   },
   'SHIP-028': {
     origin: 'Bulawayo, Zimbabwe',
     destination: 'Victoria Falls, Zimbabwe',
-    route: 'Bulawayo → Victoria Falls',
+    route: 'Bulawayo to Victoria Falls',
     distance: '440 km',
-    eta: '2026-08-07 14:00',
+    eta: getDemoEta('Delivered', '440 km'),
     status: 'Delivered',
     currentArea: 'Victoria Falls Town',
     currentRoad: 'Park Way',
     currentLandmark: 'Victoria Falls Hotel',
     nextStop: 'Delivered',
     distanceToNextStop: '0 km',
-    location: { lat: -17.9328, lng: 25.8307 }
+   location: { lat: -17.9351, lng: 25.8375 }
   },
 
   // ============================================
-  // BEITBRIDGE → HARARE (3 shipments)
+  // BEITBRIDGE to HARARE (3 shipments)
   // ============================================
   'SHIP-029': {
     origin: 'Beitbridge, Zimbabwe',
     destination: 'Harare, Zimbabwe',
-    route: 'Beitbridge → Harare',
+    route: 'Beitbridge to Harare',
     distance: '580 km',
-    eta: '2026-08-09 12:00',
+    eta: getDemoEta('At Border - Clearance', '580 km'),
     status: 'At Border - Clearance',
     currentArea: 'Beitbridge Border Post',
     currentRoad: 'A6 Highway',
@@ -448,9 +494,9 @@ const zimbabweRoutes = {
   'SHIP-030': {
     origin: 'Beitbridge, Zimbabwe',
     destination: 'Harare, Zimbabwe',
-    route: 'Beitbridge → Harare',
+    route: 'Beitbridge to Harare',
     distance: '580 km',
-    eta: '2026-08-08 14:00',
+    eta: getDemoEta('In Transit', '580 km'),
     status: 'In Transit',
     currentArea: 'Bubi',
     currentRoad: 'A6 Highway',
@@ -462,9 +508,9 @@ const zimbabweRoutes = {
   'SHIP-031': {
     origin: 'Beitbridge, Zimbabwe',
     destination: 'Harare, Zimbabwe',
-    route: 'Beitbridge → Harare',
+    route: 'Beitbridge to Harare',
     distance: '580 km',
-    eta: '2026-08-10 10:00',
+    eta: getDemoEta('Pending', '580 km'),
     status: 'Pending',
     currentArea: 'Beitbridge Depot',
     currentRoad: 'Impala Road',
@@ -475,28 +521,28 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // MUTARE → HARARE (2 shipments)
+  // MUTARE to HARARE (2 shipments)
   // ============================================
   'SHIP-032': {
     origin: 'Mutare, Zimbabwe',
     destination: 'Harare, Zimbabwe',
-    route: 'Mutare → Harare',
+    route: 'Mutare to Harare',
     distance: '263 km',
-    eta: '2026-08-07 15:00',
+    eta: getDemoEta('Delivered', '263 km'),
     status: 'Delivered',
     currentArea: 'Harare CBD',
     currentRoad: 'Leopold Takawira Street',
     currentLandmark: 'Harare Main Post Office',
     nextStop: 'Delivered',
     distanceToNextStop: '0 km',
-    location: { lat: -17.8252, lng: 31.0335 }
+    location: { lat: -17.83055, lng: 31.04719 }
   },
   'SHIP-033': {
     origin: 'Mutare, Zimbabwe',
     destination: 'Harare, Zimbabwe',
-    route: 'Mutare → Harare',
+    route: 'Mutare to Harare',
     distance: '263 km',
-    eta: '2026-08-08 11:00',
+    eta: getDemoEta('In Transit', '263 km'),
     status: 'In Transit',
     currentArea: 'Rusape',
     currentRoad: 'A3 Highway',
@@ -507,14 +553,14 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // HARARE → KARIBA (2 shipments)
+  // HARARE to KARIBA (2 shipments)
   // ============================================
   'SHIP-034': {
     origin: 'Harare, Zimbabwe',
     destination: 'Kariba, Zimbabwe',
-    route: 'Harare → Kariba',
+    route: 'Harare to Kariba',
     distance: '370 km',
-    eta: '2026-08-08 14:00',
+    eta: getDemoEta('In Transit', '370 km'),
     status: 'In Transit',
     currentArea: 'Karoi',
     currentRoad: 'A1 Highway',
@@ -526,9 +572,9 @@ const zimbabweRoutes = {
   'SHIP-035': {
     origin: 'Harare, Zimbabwe',
     destination: 'Kariba, Zimbabwe',
-    route: 'Harare → Kariba',
+    route: 'Harare to Kariba',
     distance: '370 km',
-    eta: '2026-08-09 10:00',
+    eta: getDemoEta('Pending', '370 km'),
     status: 'Pending',
     currentArea: 'Harare Depot',
     currentRoad: 'Lytton Road',
@@ -539,14 +585,14 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // HARARE → CHIRUNDU (2 shipments - border)
+  // HARARE to CHIRUNDU (2 shipments - border)
   // ============================================
     'SHIP-036': {
     origin: 'Harare, Zimbabwe',
     destination: 'Chirundu, Zimbabwe',
-    route: 'Harare → Chirundu (Zambia Border)',
+    route: 'Harare to Chirundu (Zambia Border)',
     distance: '370 km',
-    eta: '2026-08-07 14:00',
+    eta: getDemoEta('At Border - Clearance', '370 km'),
     status: 'At Border - Clearance',
     currentArea: 'Chirundu Border Post',
     currentRoad: 'A1 Highway',
@@ -558,9 +604,9 @@ const zimbabweRoutes = {
   'SHIP-037': {
     origin: 'Harare, Zimbabwe',
     destination: 'Chirundu, Zimbabwe',
-    route: 'Harare → Chirundu (Zambia Border)',
+    route: 'Harare to Chirundu (Zambia Border)',
     distance: '370 km',
-    eta: '2026-08-08 12:00',
+    eta: getDemoEta('In Transit', '370 km'),
     status: 'In Transit',
     currentArea: 'Makuti',
     currentRoad: 'A1 Highway',
@@ -571,14 +617,14 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // HARARE → PLUMTREE (2 shipments - border)
+  // HARARE to PLUMTREE (2 shipments - border)
   // ============================================
   'SHIP-038': {
     origin: 'Harare, Zimbabwe',
     destination: 'Plumtree, Zimbabwe',
-    route: 'Harare → Plumtree (Botswana Border)',
+    route: 'Harare to Plumtree (Botswana Border)',
     distance: '480 km',
-    eta: '2026-08-08 13:00',
+    eta: getDemoEta('At Border - Clearance', '480 km'),
     status: 'At Border - Clearance',
     currentArea: 'Plumtree Border Post',
     currentRoad: 'A7 Highway',
@@ -590,9 +636,9 @@ const zimbabweRoutes = {
   'SHIP-039': {
     origin: 'Harare, Zimbabwe',
     destination: 'Plumtree, Zimbabwe',
-    route: 'Harare → Plumtree (Botswana Border)',
+    route: 'Harare to Plumtree (Botswana Border)',
     distance: '480 km',
-    eta: '2026-08-09 15:00',
+    eta: getDemoEta('In Transit', '480 km'),
     status: 'In Transit',
     currentArea: 'Esigodini',
     currentRoad: 'A7 Highway',
@@ -603,14 +649,14 @@ const zimbabweRoutes = {
   },
 
   // ============================================
-  // HARARE → NYAMAPANDA (2 shipments - border)
+  // HARARE to NYAMAPANDA (2 shipments - border)
   // ============================================
   'SHIP-040': {
     origin: 'Harare, Zimbabwe',
     destination: 'Nyamapanda, Zimbabwe',
-    route: 'Harare → Nyamapanda (Mozambique Border)',
+    route: 'Harare to Nyamapanda (Mozambique Border)',
     distance: '320 km',
-    eta: '2026-08-08 09:00',
+    eta: getDemoEta('In Transit', '320 km'),
     status: 'In Transit',
     currentArea: 'Mudzi',
     currentRoad: 'A2 Highway',
@@ -622,9 +668,9 @@ const zimbabweRoutes = {
   'SHIP-041': {
     origin: 'Harare, Zimbabwe',
     destination: 'Nyamapanda, Zimbabwe',
-    route: 'Harare → Nyamapanda (Mozambique Border)',
+    route: 'Harare to Nyamapanda (Mozambique Border)',
     distance: '320 km',
-    eta: '2026-08-07 16:00',
+    eta: getDemoEta('Delivered', '320 km'),
     status: 'Delivered',
     currentArea: 'Nyamapanda Border',
     currentRoad: 'A2 Highway',
@@ -640,9 +686,9 @@ const zimbabweRoutes = {
   'SHIP-042': {
     origin: 'Harare, Zimbabwe',
     destination: 'Chinhoyi, Zimbabwe',
-    route: 'Harare → Chinhoyi',
+    route: 'Harare to Chinhoyi',
     distance: '130 km',
-    eta: '2026-08-07 08:30',
+    eta: getDemoEta('Delivered', '130 km'),
     status: 'Delivered',
     currentArea: 'Chinhoyi CBD',
     currentRoad: 'Independence Way',
@@ -654,9 +700,9 @@ const zimbabweRoutes = {
   'SHIP-043': {
     origin: 'Harare, Zimbabwe',
     destination: 'Kadoma, Zimbabwe',
-    route: 'Harare → Kadoma',
+    route: 'Harare to Kadoma',
     distance: '140 km',
-    eta: '2026-08-07 09:00',
+    eta: getDemoEta('In Transit', '140 km'),
     status: 'In Transit',
     currentArea: 'Banket',
     currentRoad: 'A5 Highway',
@@ -668,9 +714,9 @@ const zimbabweRoutes = {
   'SHIP-044': {
     origin: 'Harare, Zimbabwe',
     destination: 'Chegutu, Zimbabwe',
-    route: 'Harare → Chegutu',
+    route: 'Harare to Chegutu',
     distance: '110 km',
-    eta: '2026-08-07 08:00',
+    eta: getDemoEta('Delivered', '110 km'),
     status: 'Delivered',
     currentArea: 'Chegutu Town',
     currentRoad: 'Robert Mugabe Street',
@@ -682,9 +728,9 @@ const zimbabweRoutes = {
   'SHIP-045': {
     origin: 'Gweru, Zimbabwe',
     destination: 'Kwekwe, Zimbabwe',
-    route: 'Gweru → Kwekwe',
+    route: 'Gweru to Kwekwe',
     distance: '90 km',
-    eta: '2026-08-07 10:00',
+    eta: getDemoEta('Delivered', '90 km'),
     status: 'Delivered',
     currentArea: 'Kwekwe CBD',
     currentRoad: 'Robert Mugabe Way',
@@ -696,23 +742,23 @@ const zimbabweRoutes = {
   'SHIP-046': {
     origin: 'Kwekwe, Zimbabwe',
     destination: 'Harare, Zimbabwe',
-    route: 'Kwekwe → Harare',
+    route: 'Kwekwe to Harare',
     distance: '220 km',
-    eta: '2026-08-07 10:00',
+    eta: getDemoEta('Delivered', '220 km'),
     status: 'Delivered',
     currentArea: 'Harare CBD',
     currentRoad: 'Jason Moyo Avenue',
     currentLandmark: 'Harare Central Police Station',
     nextStop: 'Delivered',
     distanceToNextStop: '0 km',
-    location: { lat: -17.8252, lng: 31.0335 }
+    location: { lat: -17.83497, lng: 31.04802 }
   },
   'SHIP-047': {
     origin: 'Masvingo, Zimbabwe',
     destination: 'Chiredzi, Zimbabwe',
-    route: 'Masvingo → Chiredzi',
+    route: 'Masvingo to Chiredzi',
     distance: '160 km',
-    eta: '2026-08-08 12:00',
+    eta: getDemoEta('In Transit', '160 km'),
     status: 'In Transit',
     currentArea: 'Ngundu',
     currentRoad: 'A4 Highway',
@@ -724,9 +770,9 @@ const zimbabweRoutes = {
   'SHIP-048': {
     origin: 'Chiredzi, Zimbabwe',
     destination: 'Harare, Zimbabwe',
-    route: 'Chiredzi → Harare',
+    route: 'Chiredzi to Harare',
     distance: '400 km',
-    eta: '2026-08-09 11:00',
+    eta: getDemoEta('Pending', '400 km'),
     status: 'Pending',
     currentArea: 'Chiredzi Depot',
     currentRoad: 'Mkwasini Way',
@@ -738,9 +784,9 @@ const zimbabweRoutes = {
   'SHIP-049': {
     origin: 'Kariba, Zimbabwe',
     destination: 'Chirundu, Zimbabwe',
-    route: 'Kariba → Chirundu (Zambia Border)',
+    route: 'Kariba to Chirundu (Zambia Border)',
     distance: '90 km',
-    eta: '2026-08-07 16:00',
+    eta: getDemoEta('At Border - Clearance', '90 km'),
     status: 'At Border - Clearance',
     currentArea: 'Chirundu Border Post',
     currentRoad: 'A1 Highway',
@@ -752,9 +798,9 @@ const zimbabweRoutes = {
   'SHIP-050': {
     origin: 'Plumtree, Zimbabwe',
     destination: 'Bulawayo, Zimbabwe',
-    route: 'Plumtree → Bulawayo',
+    route: 'Plumtree to Bulawayo',
     distance: '110 km',
-    eta: '2026-08-07 10:30',
+    eta: getDemoEta('At Border - Clearance', '110 km'),
     status: 'At Border - Clearance',
     currentArea: 'Plumtree Border Post',
     currentRoad: 'A7 Highway',
@@ -766,3 +812,4 @@ const zimbabweRoutes = {
 };
 
 export default zimbabweRoutes;
+

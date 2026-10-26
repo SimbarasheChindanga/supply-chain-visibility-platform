@@ -98,9 +98,13 @@ function Analytics({ shipments }) {
           <div style={{ fontSize: '2.5rem' }}>⚠️</div>
           <div>
             <h3 style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0, fontWeight: 400 }}>Delayed</h3>
-            <p style={{ fontSize: '2rem', fontWeight: 700, color: '#1a1a2e', margin: '0.2rem 0 0 0' }}>
-              {stats.byStatus.find(s => s.name.includes('Delayed'))?.value || 0}
-            </p>
+            
+<p style={{ fontSize: '2rem', fontWeight: 700, color: '#1a1a2e', margin: '0.2rem 0 0 0' }}>
+  {stats.byStatus
+    .filter(s => s.name.includes('Delayed'))
+    .reduce((total, s) => total + s.value, 0)}
+</p>
+
           </div>
         </div>
       </div>

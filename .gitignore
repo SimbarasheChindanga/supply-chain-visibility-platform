@@ -30,3 +30,12 @@ yarn-error.log*
 # System files
 .DS_Store
 Thumbs.db
+# Local backend secrets and user records
+backend/.env
+backend/users.json
+# Temporary debugging backups
+*.bak
+*.backup
+*.backup-*
+*.before-*
+*.encoding-fix-backup

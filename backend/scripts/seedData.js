@@ -211,26 +211,47 @@ const zimbabweShipments = [
   }
 ];
 
+
 async function seedDatabase() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('✅ Connected to MongoDB');
-    
-    // Clear existing data
-    await Shipment.deleteMany({});
-    console.log('🗑️  Cleared existing shipments');
-    
-    // Insert new data
-    await Shipment.insertMany(zimbabweShipments);
-    console.log(`✅ Inserted ${zimbabweShipments.length} shipments`);
-    
-    console.log('\n📦 Zimbabwe Shipments Imported Successfully!');
-    console.log('📋 Try searching for: SHIP-001, SHIP-003, SHIP-010');
-    
-    process.exit(0);
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI is missing from backend/.env');
+    }
+
+    await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 10000
+    });
+
+    console.log('Connected to MongoDB');
+
+    let inserted = 0;
+    let updated = 0;
+
+    for (const shipment of zimbabweShipments) {
+      const result = await Shipment.updateOne(
+        { shipmentId: shipment.shipmentId },
+        { $set: shipment },
+        { upsert: true, runValidators: true }
+      );
+
+      if (result.upsertedCount > 0) {
+        inserted++;
+      } else if (result.modifiedCount > 0) {
+        updated++;
+      }
+    }
+
+    const total = await Shipment.countDocuments();
+
+    console.log(`Inserted: ${inserted}`);
+    console.log(`Updated: ${updated}`);
+    console.log(`Total shipments in database: ${total}`);
+    console.log('Shipment seeding completed successfully.');
   } catch (error) {
-    console.error('❌ Error seeding database:', error.message);
-    process.exit(1);
+    console.error('Error seeding database:', error.message);
+    process.exitCode = 1;
+  } finally {
+    await mongoose.disconnect();
   }
 }
 
