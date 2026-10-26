@@ -378,42 +378,23 @@ Set up CI/CD pipeline
 | **API Development** | RESTful Endpoints, Error Handling, Testing |
 | **Project Management** | Git, GitHub, Project Structure, Documentation |
 
-## 👤 Author
+## Author
 
 **Simbarashe Chindanga**
 
-Role: Transport Technology Specialist
+- **Role:** Aspiring Transport Technology Specialist
+- **Focus:** Supply Chain Visibility, Data Analytics, and Full-Stack Development
+- **Location:** Zimbabwe
+- **GitHub Portfolio:** [SimbarasheChindanga](https://github.com/SimbarasheChindanga)
+- **Email:** [chindangasimbarashe02@gmail.com](mailto:chindangasimbarashe02@gmail.com)
 
-Focus: Supply Chain Visibility, Data Analytics, Full-Stack Development
+## License
 
-Location: Zimbabwe 🇿🇼
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-- 💼 Portfolio: https://github.com/SimbarasheChindanga
-- 📧 Email: chindangasimbarashe02@gmail.com
-- 🐙 GitHub: https://github.com/SimbarasheChindanga
+## Acknowledgements
 
-
-## 📄 License
-This project is licensed under the MIT License – see the LICENSE file for details.
-
-## 🙏 Acknowledgements
-OpenStreetMap for free map tiles
-
-Leaflet for the mapping library
-
-Recharts for charting components
-
-MongoDB Atlas for free database hosting (planned)
-
-Zimbabwe National Statistics for geographic data
-
-## 📞 Contact
-For questions, collaborations, or feedback, please reach out via:
-
-Email: [your-email@example.com]
-
-LinkedIn: [Your LinkedIn Profile]
-
-GitHub: [Your GitHub Profile]
-
-
+- [OpenStreetMap](https://www.openstreetmap.org/) for map data and tiles.
+- [Leaflet](https://leafletjs.com/) for interactive mapping.
+- [Recharts](https://recharts.org/) for data visualization.
+- [MongoDB](https://www.mongodb.com/) for database technology.
